@@ -31,16 +31,16 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = ReactNativeTodoSampleApp;
 		};
-		EC3924F426E7C3C200C58EB6 /* PBXContainerItemProxy */ = {
+		EC39252926E7DCC900C58EB6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = EC3924EF26E7C3C200C58EB6 /* FRAuth.xcodeproj */;
+			containerPortal = EC39252126E7DCC900C58EB6 /* FRAuth.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = D55462F822A6DF720096C7A4;
 			remoteInfo = FRAuth;
 		};
-		EC3924F626E7C3C200C58EB6 /* PBXContainerItemProxy */ = {
+		EC39252B26E7DCC900C58EB6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = EC3924EF26E7C3C200C58EB6 /* FRAuth.xcodeproj */;
+			containerPortal = EC39252126E7DCC900C58EB6 /* FRAuth.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = D554630122A6DF720096C7A4;
 			remoteInfo = FRAuthTests;
@@ -64,12 +64,12 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ReactNativeTodoSampleApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A441A285867D566524683A0A /* libPods-ReactNativeTodoSampleApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNativeTodoSampleApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C629AB994A3436F52039A23F /* Pods-ReactNativeTodoSampleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeTodoSampleApp.release.xcconfig"; path = "Target Support Files/Pods-ReactNativeTodoSampleApp/Pods-ReactNativeTodoSampleApp.release.xcconfig"; sourceTree = "<group>"; };
-		EC3924EF26E7C3C200C58EB6 /* FRAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRAuth.xcodeproj; path = "../../../iOS/forgerock-ios-sdk/FRAuth/FRAuth.xcodeproj"; sourceTree = "<group>"; };
 		EC39250C26E7CACC00C58EB6 /* ReactNativeTodoSampleApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactNativeTodoSampleApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		EC39250D26E7CACD00C58EB6 /* ForgeRockModuleSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgeRockModuleSwift.swift; sourceTree = "<group>"; };
 		EC39250E26E7CACD00C58EB6 /* ForgeRockModuleSwift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgeRockModuleSwift.m; sourceTree = "<group>"; };
 		EC39251426E7CF2A00C58EB6 /* FRModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRModuleTests.swift; sourceTree = "<group>"; };
 		EC39251A26E7D07B00C58EB6 /* FRAuthConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfig.plist; sourceTree = "<group>"; };
+		EC39252126E7DCC900C58EB6 /* FRAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRAuth.xcodeproj; path = FRAuth/FRAuth.xcodeproj; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -156,7 +156,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				EC3924EF26E7C3C200C58EB6 /* FRAuth.xcodeproj */,
+				EC39252126E7DCC900C58EB6 /* FRAuth.xcodeproj */,
 				13B07FAE1A68108700A75B9A /* ReactNativeTodoSampleApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ReactNativeTodoSampleAppTests */,
@@ -178,15 +178,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EC3924F026E7C3C200C58EB6 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				EC3924F526E7C3C200C58EB6 /* FRAuth.framework */,
-				EC3924F726E7C3C200C58EB6 /* FRAuthTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		EC39250926E7CA8C00C58EB6 /* ForgeRockModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +187,15 @@
 				EC39250C26E7CACC00C58EB6 /* ReactNativeTodoSampleApp-Bridging-Header.h */,
 			);
 			path = ForgeRockModule;
+			sourceTree = "<group>";
+		};
+		EC39252226E7DCC900C58EB6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EC39252A26E7DCC900C58EB6 /* FRAuth.framework */,
+				EC39252C26E7DCC900C58EB6 /* FRAuthTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -274,8 +274,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = EC3924F026E7C3C200C58EB6 /* Products */;
-					ProjectRef = EC3924EF26E7C3C200C58EB6 /* FRAuth.xcodeproj */;
+					ProductGroup = EC39252226E7DCC900C58EB6 /* Products */;
+					ProjectRef = EC39252126E7DCC900C58EB6 /* FRAuth.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -287,18 +287,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		EC3924F526E7C3C200C58EB6 /* FRAuth.framework */ = {
+		EC39252A26E7DCC900C58EB6 /* FRAuth.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = FRAuth.framework;
-			remoteRef = EC3924F426E7C3C200C58EB6 /* PBXContainerItemProxy */;
+			remoteRef = EC39252926E7DCC900C58EB6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		EC3924F726E7C3C200C58EB6 /* FRAuthTests.xctest */ = {
+		EC39252C26E7DCC900C58EB6 /* FRAuthTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = FRAuthTests.xctest;
-			remoteRef = EC3924F626E7C3C200C58EB6 /* PBXContainerItemProxy */;
+			remoteRef = EC39252B26E7DCC900C58EB6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
