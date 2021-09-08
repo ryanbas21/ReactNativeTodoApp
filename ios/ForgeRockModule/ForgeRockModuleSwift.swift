@@ -40,6 +40,13 @@ public class ForgeRockModuleSwift: NSObject {
     }
   }
   
+  @objc(registerWithoutUI:rejecter:)
+  func registerWithoutUI(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+    FRUser.register { (user, node, error) in
+      self.handleNode(user, node, error, resolve: resolve, rejecter: reject)
+    }
+  }
+  
   @objc(loginWithBrowser:rejecter:)
   func loginWithBrowser(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     DispatchQueue.main.async {
@@ -119,10 +126,12 @@ public class ForgeRockModuleSwift: NSObject {
             for (innerIndex, rawCallback) in callbacksArray.enumerated() {
               if let inputsArray = rawCallback.input, outerIndex == innerIndex {
                 for input in inputsArray {
-                  if input.name.contains("question") {
-                    thisCallback.setQuestion(input.value)
-                  } else {
-                    thisCallback.setAnswer(input.value)
+                  if let value = input.value!.value as? String {
+                    if input.name.contains("question") {
+                      thisCallback.setQuestion(value)
+                    } else {
+                      thisCallback.setAnswer(value)
+                    }
                   }
                 }
               }
@@ -131,12 +140,25 @@ public class ForgeRockModuleSwift: NSObject {
           if let thisCallback = nodeCallback as? SingleValueCallback {
             for (innerIndex, rawCallback) in callbacksArray.enumerated() {
               if let inputsArray = rawCallback.input, outerIndex == innerIndex, let value = inputsArray.first?.value {
-                thisCallback.setValue(value)
+                switch value.originalType {
+                case .String:
+                  thisCallback.setValue(value.value as! String)
+                case .Int:
+                  thisCallback.setValue(value.value as! Int)
+                case .Double:
+                  thisCallback.setValue(value.value as! Double)
+                case .Bool:
+                  thisCallback.setValue(value.value as! Bool)
+                default:
+                  break
+                }
+                
               }
             }
           }
         }
       }
+      
       //Call node.next
       node.next(completion: { (user: FRUser?, node, error) in
         if let node = node {
@@ -158,6 +180,7 @@ public class ForgeRockModuleSwift: NSObject {
           }
         }
       })
+      
     } else {
       reject("Error", "UnkownError", nil)
     }
@@ -323,5 +346,62 @@ public struct RawCallback: Codable {
 
 public struct RawInput: Codable {
   var name: String
-  var value: String
+  var value: FlexibleType?
+}
+
+public struct FlexibleType: Codable {
+  let value: Any
+  let originalType: ResponseType
+  
+  enum ResponseType {
+    case String
+    case Int
+    case Double
+    case Bool
+    case TypeMismatch
+    case NotSet
+  }
+  
+  init(_ value: String) {
+    self.value = value
+    self.originalType = .NotSet
+  }
+  
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.singleValueContainer()
+    // attempt to decode from all JSON primitives
+    if let str = try? container.decode(String.self) {
+      value = str
+      originalType = .String
+    } else if let int = try? container.decode(Int.self) {
+      value = int
+      originalType = .Int
+    } else if let double = try? container.decode(Double.self) {
+      value = double
+      originalType = .Double
+    } else if let bool = try? container.decode(Bool.self) {
+      value = bool
+      originalType = .Bool
+    } else {
+      originalType = .TypeMismatch
+      throw DecodingError.typeMismatch(String.self, .init(codingPath: decoder.codingPath, debugDescription: ""))
+    }
+  }
+  
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    switch originalType {
+    case .String:
+      try container.encode(value as! String)
+    case .Int:
+      try container.encode(value as! Int)
+    case .Double:
+      try container.encode(value as! Double)
+    case .Bool:
+      try container.encode(value as! Bool)
+    default:
+      throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Invalid JSON value"))
+    }
+    
+  }
 }
