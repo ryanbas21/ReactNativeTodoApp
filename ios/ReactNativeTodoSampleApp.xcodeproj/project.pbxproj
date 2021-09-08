@@ -14,6 +14,13 @@
 		19616F7156DF2B8FBB1D64D0 /* libPods-ReactNativeTodoSampleApp-ReactNativeTodoSampleAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 36E0D3A2A65BC92BB91C1B02 /* libPods-ReactNativeTodoSampleApp-ReactNativeTodoSampleAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C368C0DB65E29380BA0575D8 /* libPods-ReactNativeTodoSampleApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A441A285867D566524683A0A /* libPods-ReactNativeTodoSampleApp.a */; };
+		EC39250F26E7CACD00C58EB6 /* ForgeRockModuleSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC39250D26E7CACD00C58EB6 /* ForgeRockModuleSwift.swift */; };
+		EC39251026E7CACD00C58EB6 /* ForgeRockModuleSwift.m in Sources */ = {isa = PBXBuildFile; fileRef = EC39250E26E7CACD00C58EB6 /* ForgeRockModuleSwift.m */; };
+		EC39251226E7CF0900C58EB6 /* ForgeRockModuleSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC39250D26E7CACD00C58EB6 /* ForgeRockModuleSwift.swift */; };
+		EC39251326E7CF0C00C58EB6 /* ForgeRockModuleSwift.m in Sources */ = {isa = PBXBuildFile; fileRef = EC39250E26E7CACD00C58EB6 /* ForgeRockModuleSwift.m */; };
+		EC39251526E7CF2A00C58EB6 /* FRModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC39251426E7CF2A00C58EB6 /* FRModuleTests.swift */; };
+		EC39251B26E7D07B00C58EB6 /* FRAuthConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = EC39251A26E7D07B00C58EB6 /* FRAuthConfig.plist */; };
+		EC39251C26E7D07B00C58EB6 /* FRAuthConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = EC39251A26E7D07B00C58EB6 /* FRAuthConfig.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,6 +30,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = ReactNativeTodoSampleApp;
+		};
+		EC39252926E7DCC900C58EB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EC39252126E7DCC900C58EB6 /* FRAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D55462F822A6DF720096C7A4;
+			remoteInfo = FRAuth;
+		};
+		EC39252B26E7DCC900C58EB6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EC39252126E7DCC900C58EB6 /* FRAuth.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D554630122A6DF720096C7A4;
+			remoteInfo = FRAuthTests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -43,6 +64,12 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ReactNativeTodoSampleApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A441A285867D566524683A0A /* libPods-ReactNativeTodoSampleApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNativeTodoSampleApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C629AB994A3436F52039A23F /* Pods-ReactNativeTodoSampleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeTodoSampleApp.release.xcconfig"; path = "Target Support Files/Pods-ReactNativeTodoSampleApp/Pods-ReactNativeTodoSampleApp.release.xcconfig"; sourceTree = "<group>"; };
+		EC39250C26E7CACC00C58EB6 /* ReactNativeTodoSampleApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactNativeTodoSampleApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		EC39250D26E7CACD00C58EB6 /* ForgeRockModuleSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgeRockModuleSwift.swift; sourceTree = "<group>"; };
+		EC39250E26E7CACD00C58EB6 /* ForgeRockModuleSwift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgeRockModuleSwift.m; sourceTree = "<group>"; };
+		EC39251426E7CF2A00C58EB6 /* FRModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FRModuleTests.swift; sourceTree = "<group>"; };
+		EC39251A26E7D07B00C58EB6 /* FRAuthConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FRAuthConfig.plist; sourceTree = "<group>"; };
+		EC39252126E7DCC900C58EB6 /* FRAuth.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRAuth.xcodeproj; path = FRAuth/FRAuth.xcodeproj; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -69,6 +96,7 @@
 		00E356EF1AD99517003FC87E /* ReactNativeTodoSampleAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				EC39251426E7CF2A00C58EB6 /* FRModuleTests.swift */,
 				00E356F21AD99517003FC87E /* ReactNativeTodoSampleAppTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
@@ -86,6 +114,7 @@
 		13B07FAE1A68108700A75B9A /* ReactNativeTodoSampleApp */ = {
 			isa = PBXGroup;
 			children = (
+				EC39250926E7CA8C00C58EB6 /* ForgeRockModule */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -114,7 +143,6 @@
 				2208B27CE909BB33F5F7805E /* Pods-ReactNativeTodoSampleApp-ReactNativeTodoSampleAppTests.debug.xcconfig */,
 				55A6986806E87760274DB387 /* Pods-ReactNativeTodoSampleApp-ReactNativeTodoSampleAppTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -128,6 +156,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				EC39252126E7DCC900C58EB6 /* FRAuth.xcodeproj */,
 				13B07FAE1A68108700A75B9A /* ReactNativeTodoSampleApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ReactNativeTodoSampleAppTests */,
@@ -145,6 +174,26 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* ReactNativeTodoSampleApp.app */,
 				00E356EE1AD99517003FC87E /* ReactNativeTodoSampleAppTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EC39250926E7CA8C00C58EB6 /* ForgeRockModule */ = {
+			isa = PBXGroup;
+			children = (
+				EC39251A26E7D07B00C58EB6 /* FRAuthConfig.plist */,
+				EC39250E26E7CACD00C58EB6 /* ForgeRockModuleSwift.m */,
+				EC39250D26E7CACD00C58EB6 /* ForgeRockModuleSwift.swift */,
+				EC39250C26E7CACC00C58EB6 /* ReactNativeTodoSampleApp-Bridging-Header.h */,
+			);
+			path = ForgeRockModule;
+			sourceTree = "<group>";
+		};
+		EC39252226E7DCC900C58EB6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EC39252A26E7DCC900C58EB6 /* FRAuth.framework */,
+				EC39252C26E7DCC900C58EB6 /* FRAuthTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -208,7 +257,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1250;
 					};
 				};
 			};
@@ -223,6 +272,12 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = EC39252226E7DCC900C58EB6 /* Products */;
+					ProjectRef = EC39252126E7DCC900C58EB6 /* FRAuth.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* ReactNativeTodoSampleApp */,
@@ -231,11 +286,29 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		EC39252A26E7DCC900C58EB6 /* FRAuth.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FRAuth.framework;
+			remoteRef = EC39252926E7DCC900C58EB6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EC39252C26E7DCC900C58EB6 /* FRAuthTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FRAuthTests.xctest;
+			remoteRef = EC39252B26E7DCC900C58EB6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		00E356EC1AD99517003FC87E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC39251C26E7D07B00C58EB6 /* FRAuthConfig.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +317,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				EC39251B26E7D07B00C58EB6 /* FRAuthConfig.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -403,7 +477,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC39251226E7CF0900C58EB6 /* ForgeRockModuleSwift.swift in Sources */,
 				00E356F31AD99517003FC87E /* ReactNativeTodoSampleAppTests.m in Sources */,
+				EC39251326E7CF0C00C58EB6 /* ForgeRockModuleSwift.m in Sources */,
+				EC39251526E7CF2A00C58EB6 /* FRModuleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,7 +488,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC39250F26E7CACD00C58EB6 /* ForgeRockModuleSwift.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				EC39251026E7CACD00C58EB6 /* ForgeRockModuleSwift.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,6 +510,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2208B27CE909BB33F5F7805E /* Pods-ReactNativeTodoSampleApp-ReactNativeTodoSampleAppTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -450,6 +530,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ForgeRockModule/ReactNativeTodoSampleApp-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReactNativeTodoSampleApp.app/ReactNativeTodoSampleApp";
 			};
 			name = Debug;
@@ -458,8 +541,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 55A6986806E87760274DB387 /* Pods-ReactNativeTodoSampleApp-ReactNativeTodoSampleAppTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = ReactNativeTodoSampleAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -474,6 +559,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ForgeRockModule/ReactNativeTodoSampleApp-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReactNativeTodoSampleApp.app/ReactNativeTodoSampleApp";
 			};
 			name = Release;
@@ -498,6 +586,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = ReactNativeTodoSampleApp;
+				SWIFT_OBJC_BRIDGING_HEADER = "ForgeRockModule/ReactNativeTodoSampleApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -511,6 +600,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = ReactNativeTodoSampleApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -523,6 +613,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = ReactNativeTodoSampleApp;
+				SWIFT_OBJC_BRIDGING_HEADER = "ForgeRockModule/ReactNativeTodoSampleApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
