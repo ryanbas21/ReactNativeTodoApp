@@ -10,7 +10,7 @@ import {
   Divider,
   ScrollView,
 } from 'native-base';
-import { AntDesign, Ionicons } from 'react-native-vector-icons';
+// import { AntDesign, Ionicons } from 'react-native-vector-icons';
 import { useTodos } from '../../hooks/useTodos';
 
 function Todo({ id, title, isCompleted, handleStatusChange, i }) {
