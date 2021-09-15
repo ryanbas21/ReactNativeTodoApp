@@ -30,13 +30,18 @@ function Login({ data, callbacks, navigation }) {
   const [kba, setKba] = useState(null);
   const [err, setErr] = useState(null);
   const [res, setRes] = useState(null);
-  const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
   const typeMap = {
     PasswordCallback: pass,
     KbaCreateCallback: ans,
     NameCallback: username,
+  };
+
+  const loginSuccess = async (setUser) => {
+    const user = await ForgeRockModule.getUserInfo();
+    setUser(user);
+    navigation.navigate('Todos');
   };
 
   const setterMap = {
@@ -46,14 +51,11 @@ function Login({ data, callbacks, navigation }) {
   };
 
   useEffect(() => {
-    ForgeRockModule.performUserLogout();
-  }, []);
-
-  useEffect(() => {
     switch (res) {
       case 'LoginSuccess': {
       }
       case 'LoginFailure': {
+        console.log('err', err);
         setErr('Incorrect credentials, try again');
       }
       default: {
@@ -74,23 +76,20 @@ function Login({ data, callbacks, navigation }) {
       const response = await ForgeRockModule.next(stringifiedResponse);
 
       if (response.type === 'LoginSuccess') {
-        setToken(JSON.parse(response.sessionToken));
-        setUser(ForgeRockModule.getUserInfo());
-        navigation.navigate('Todos');
+        loginSuccess(setUser);
       }
     } catch (error) {
+      setErr(error.message);
       setRes(error.message);
     }
   };
 
   const handleLogout = async () => {
-    const logout = await ForgeRockModule.performUserLogout();
+    await ForgeRockModule.performUserLogout();
     setUser(null);
     setKba(null);
     setUsername(null);
     setPass(null);
-    console.log(logout);
-    navigation.navigate('Home');
   };
 
   const handleSubmit = async () => {
@@ -98,12 +97,15 @@ function Login({ data, callbacks, navigation }) {
       response.input[0].value = typeMap[type];
       return response;
     });
-
     const stringifiedResponse = JSON.stringify({ ...data, callbacks: res });
 
     try {
       const response = await ForgeRockModule.next(stringifiedResponse);
-      setKba(JSON.parse(response));
+      if (response.type === 'LoginSuccess') {
+        loginSuccess(setUser);
+      } else {
+        setKba(JSON.parse(response));
+      }
     } catch (error) {
       setRes(error.message);
     }

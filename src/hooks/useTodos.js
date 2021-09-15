@@ -9,5 +9,4 @@ function useTodos() {
     getTodos();
   }, []);
 }
-
 export { useTodos };

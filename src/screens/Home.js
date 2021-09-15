@@ -7,14 +7,18 @@ const { ForgeRockModule } = NativeModules;
 function Home({ navigation }) {
   const [callbacks, setCallbacks] = useState([]);
   const [nxt, setNxt] = useState(null);
+
   useEffect(() => {
-    ForgeRockModule.performUserLogout();
+    async function logout() {
+      await ForgeRockModule.performUserLogout();
+    }
+    logout();
   }, []);
+
   useEffect(() => {
     (async () => {
       await ForgeRockModule.frAuthStart();
       const data = await ForgeRockModule.loginWithoutUI();
-      console.log(data);
       const next = JSON.parse(data);
       setNxt(next);
       setCallbacks(
@@ -26,7 +30,14 @@ function Home({ navigation }) {
     })();
   }, []);
 
-  return <Login data={nxt} callbacks={callbacks} setNxt={setNxt} navigation={navigation} />;
+  return (
+    <Login
+      data={nxt}
+      callbacks={callbacks}
+      setNxt={setNxt}
+      navigation={navigation}
+    />
+  );
 }
 
 export { Home };
