@@ -22,8 +22,9 @@ function TodoInput(props) {
         onChangeText={onChangeText}
         value={text}
         placeholder="Add a Todo"
+        m={2}
       />
-      <Button onPress={handleTodos} accessibilityLabel="What needs doing">
+      <Button m={2} onPress={handleTodos} accessibilityLabel="What needs doing">
         Add Todo
       </Button>
     </HStack>

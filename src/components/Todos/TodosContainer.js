@@ -53,16 +53,18 @@ function TodoContainer() {
           </Heading>
 
           <Center>
-            <Box p={4} bg={'#E0F7FA'}>
-              <Box w={'100%'} bg={'white'}>
+            <Box p={4} bg={'#E0F7FA'} h={'100%'}>
+              <Box w={'100%'} bg={'white'} h={'70%'} p={2}>
                 <TodoInput todos={todos} addTodo={setTodos} />
-                <Box alignItems="flex-start">
-                  <Todos
-                    todos={todos}
-                    handleDelete={handleDelete}
-                    handleStatusChange={handleStatusChange}
-                  />
-                </Box>
+                <Center>
+                  <Box alignItems="flex-start">
+                    <Todos
+                      todos={todos}
+                      handleDelete={handleDelete}
+                      handleStatusChange={handleStatusChange}
+                    />
+                  </Box>
+                </Center>
               </Box>
             </Box>
           </Center>

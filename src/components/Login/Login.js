@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Box, VStack, FormControl } from 'native-base';
 import { NativeModules } from 'react-native';
 
+import { useToggle } from '../../hooks/useToggle';
 import { Password } from './Password';
-import { KBA } from './KBA';
 import { Footer } from './Footer';
 import { Username } from './Username';
 import { Loggedin } from './Loggedin';
@@ -11,110 +11,100 @@ import { Header } from './Header';
 
 const { ForgeRockModule } = NativeModules;
 
-const map = {
+// Given a CallbackType, return a Component
+const callbackToComponentMap = {
   NameCallback: ({ label, setter }) => (
     <Username setUsername={setter} label={label} key={label} />
   ),
   PasswordCallback: ({ label, setter }) => (
     <Password setPass={setter} label={label} key={label} />
   ),
-  KbaCreateCallback: ({ label, setter }) => (
-    <KBA setAnswer={setter} label={label} key={label} />
-  ),
 };
 
 function Login({ data, callbacks, navigation }) {
   const [username, setUsername] = useState('');
-  const [ans, setAnswer] = useState('');
   const [pass, setPass] = useState('');
-  const [kba, setKba] = useState(null);
   const [err, setErr] = useState(null);
-  const [res, setRes] = useState(null);
   const [user, setUser] = useState(null);
+  const [isAuth, setAuth] = useToggle(false);
 
-  const typeMap = {
-    PasswordCallback: pass,
-    KbaCreateCallback: ans,
-    NameCallback: username,
-  };
-
-  const loginSuccess = async (setUser) => {
-    const user = await ForgeRockModule.getUserInfo();
-    setUser(user);
-    navigation.navigate('Todos');
-  };
-
-  const setterMap = {
+  const setStateByType = {
     PasswordCallback: setPass,
-    KbaCreateCallback: setAnswer,
     NameCallback: setUsername,
   };
 
-  useEffect(() => {
-    switch (res) {
-      case 'LoginSuccess': {
-      }
-      case 'LoginFailure': {
-        console.log('err', err);
-        setErr('Incorrect credentials, try again');
-      }
-      default: {
-      }
-    }
-  }, [res]);
-
-  const handleKbaSubmit = async () => {
-    const res = kba.callbacks.map(({ type, response }) => {
-      const res = JSON.parse(response);
-      res.input[1].value = typeMap[type];
-      return res;
-    });
-
-    const stringifiedResponse = JSON.stringify({ ...kba, callbacks: res });
-
-    try {
-      const response = await ForgeRockModule.next(stringifiedResponse);
-
-      if (response.type === 'LoginSuccess') {
-        loginSuccess(setUser);
-      }
-    } catch (error) {
-      setErr(error.message);
-      setRes(error.message);
-    }
+  const getValueByType = {
+    PasswordCallback: pass,
+    NameCallback: username,
   };
 
+  useEffect(() => {
+    const loginSuccess = async () => {
+      /*
+       * When we get a 'LoginSuccess' message we want to complete the oauth/OIDC flow by getting
+       * an access token. After getting a successful access
+       * token we have completed the journey
+       */
+      try {
+        await ForgeRockModule.getAccessToken();
+        const user = await ForgeRockModule.getUserInfo();
+        setUser(user);
+        navigation.navigate('Todos');
+      } catch (err) {
+        setErr('Error authenticating user, no access token');
+        setUser(null);
+      }
+    };
+    if (isAuth) {
+      loginSuccess();
+    }
+  }, [isAuth]);
+
   const handleLogout = async () => {
-    await ForgeRockModule.performUserLogout();
-    setUser(null);
-    setKba(null);
-    setUsername(null);
-    setPass(null);
+    try {
+      // utilize the SDK to log a user out
+      await ForgeRockModule.performUserLogout();
+      // reset state values upon successfully logging a user out
+      setUser(null);
+      setUsername(null);
+      setPass(null);
+      setAuth(false);
+    } catch (err) {
+      setErr('Error Logging Out');
+    }
   };
 
   const handleSubmit = async () => {
-    const res = callbacks.map(({ type, response }) => {
-      response.input[0].value = typeMap[type];
+    /*
+     * We need to mutate the callbacks map in order to send the updated values through the next step
+     * in the journey
+     */
+    const newCallbacks = callbacks.map(({ type, response }) => {
+      response.input[0].value = getValueByType[type];
       return response;
     });
-    const stringifiedResponse = JSON.stringify({ ...data, callbacks: res });
+
+    const request = JSON.stringify({ ...data, callbacks: newCallbacks });
 
     try {
-      const response = await ForgeRockModule.next(stringifiedResponse);
+      /*
+       * Call the next step in the authentication journey, passing in the data to submit.
+       * We want to pass in the mutated callbacks array, which contains the values the user has
+       * added to the form
+       */
+      const response = await ForgeRockModule.next(request);
       if (response.type === 'LoginSuccess') {
-        loginSuccess(setUser);
-      } else {
-        setKba(JSON.parse(response));
+        setAuth();
       }
     } catch (error) {
-      setRes(error.message);
+      setAuth(false);
     }
   };
 
-  if (user) {
-    return <Loggedin user={user} handleLogout={handleLogout} />;
-  }
-  return (
+  // this will be removed when protected route impl. is done
+  return user ? (
+    <Loggedin user={user} handleLogout={handleLogout} />
+  ) : (
     <Box safeArea flex={1} p={2} w="90%" mx="auto">
       <Header />
       <FormControl isInvalid={Boolean(err)}>
@@ -124,25 +114,15 @@ function Login({ data, callbacks, navigation }) {
         <VStack space={2} mt={5}>
           {callbacks.length
             ? callbacks.map(({ type, prompt: label }) =>
-                map[type]
-                  ? map[type]({
+                callbackToComponentMap[type]
+                  ? callbackToComponentMap[type]({
                       label,
-                      setter: setterMap[type],
+                      setter: setStateByType[type],
                     })
                   : null,
               )
             : null}
-          {kba && kba.callbacks
-            ? kba.callbacks.map(({ type, prompt: label }) =>
-                map[type]
-                  ? map[type]({
-                      label,
-                      setter: setterMap[type],
-                    })
-                  : null,
-              )
-            : null}
-          <Footer handleSubmit={kba ? handleKbaSubmit : handleSubmit} />
+          <Footer handleSubmit={handleSubmit} />
         </VStack>
       </FormControl>
     </Box>
