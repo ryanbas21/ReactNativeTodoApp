@@ -1,54 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Text,
-  Heading,
-  VStack,
-  FormControl,
-  Input,
-  Link,
-  Button,
-  HStack,
-} from 'native-base';
+import { Box, VStack, FormControl } from 'native-base';
 import { NativeModules } from 'react-native';
 
+import { Password } from './Password';
+import { KBA } from './KBA';
+import { Footer } from './Footer';
+import { Username } from './Username';
+import { Loggedin } from './Loggedin';
+import { Header } from './Header';
+
 const { ForgeRockModule } = NativeModules;
-
-const Password = ({ label, setPass }) => (
-  <FormControl mb={5}>
-    <FormControl.Label
-      _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
-      {label}
-    </FormControl.Label>
-    <Input type="password" onChangeText={setPass} />
-    <Link
-      _text={{ fontSize: 'xs', fontWeight: '700', color: 'cyan.500' }}
-      alignSelf="flex-end"
-      mt={1}>
-      Forget Password?
-    </Link>
-  </FormControl>
-);
-
-const Username = ({ label, setUsername }) => (
-  <FormControl>
-    <FormControl.Label
-      _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
-      {label}
-    </FormControl.Label>
-    <Input onChangeText={setUsername} />
-  </FormControl>
-);
-
-const KBA = ({ label, setAnswer }) => (
-  <FormControl>
-    <FormControl.Label
-      _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
-      {label}
-    </FormControl.Label>
-    <Input onChangeText={setAnswer} />
-  </FormControl>
-);
 
 const map = {
   NameCallback: ({ label, setter }) => (
@@ -62,7 +23,7 @@ const map = {
   ),
 };
 
-function Login({ data, callbacks, setNxt, navigation }) {
+function Login({ data, callbacks, navigation }) {
   const [username, setUsername] = useState('');
   const [ans, setAnswer] = useState('');
   const [pass, setPass] = useState('');
@@ -77,13 +38,17 @@ function Login({ data, callbacks, setNxt, navigation }) {
     KbaCreateCallback: ans,
     NameCallback: username,
   };
+
   const setterMap = {
     PasswordCallback: setPass,
     KbaCreateCallback: setAnswer,
     NameCallback: setUsername,
   };
 
-  console.log(callbacks);
+  useEffect(() => {
+    ForgeRockModule.performUserLogout();
+  }, []);
+
   useEffect(() => {
     switch (res) {
       case 'LoginSuccess': {
@@ -95,16 +60,19 @@ function Login({ data, callbacks, setNxt, navigation }) {
       }
     }
   }, [res]);
+
   const handleKbaSubmit = async () => {
     const res = kba.callbacks.map(({ type, response }) => {
       const res = JSON.parse(response);
       res.input[1].value = typeMap[type];
       return res;
     });
+
     const stringifiedResponse = JSON.stringify({ ...kba, callbacks: res });
+
     try {
       const response = await ForgeRockModule.next(stringifiedResponse);
-      console.log('response', response);
+
       if (response.type === 'LoginSuccess') {
         setToken(JSON.parse(response.sessionToken));
         setUser(ForgeRockModule.getUserInfo());
@@ -114,6 +82,7 @@ function Login({ data, callbacks, setNxt, navigation }) {
       setRes(error.message);
     }
   };
+
   const handleLogout = async () => {
     const logout = await ForgeRockModule.performUserLogout();
     setUser(null);
@@ -123,6 +92,7 @@ function Login({ data, callbacks, setNxt, navigation }) {
     console.log(logout);
     navigation.navigate('Home');
   };
+
   const handleSubmit = async () => {
     const res = callbacks.map(({ type, response }) => {
       response.input[0].value = typeMap[type];
@@ -138,22 +108,13 @@ function Login({ data, callbacks, setNxt, navigation }) {
       setRes(error.message);
     }
   };
+
   if (user) {
-    return (
-      <Box>
-        <Text>{JSON.stringify(user)}</Text>
-        <Button onPress={handleLogout}>Logout</Button>
-      </Box>
-    );
+    return <Loggedin user={user} handleLogout={handleLogout} />;
   }
   return (
     <Box safeArea flex={1} p={2} w="90%" mx="auto">
-      <Heading size="lg" color="primary.500">
-        Welcome
-      </Heading>
-      <Heading color="muted.400" size="xs">
-        Sign in to continue!
-      </Heading>
+      <Header />
       <FormControl isInvalid={Boolean(err)}>
         {err ? (
           <FormControl.ErrorMessage>{err}</FormControl.ErrorMessage>
@@ -179,24 +140,7 @@ function Login({ data, callbacks, setNxt, navigation }) {
                   : null,
               )
             : null}
-          <VStack space={2}>
-            <Button
-              colorScheme="cyan"
-              _text={{ color: 'white' }}
-              onPress={kba ? handleKbaSubmit : handleSubmit}>
-              Login
-            </Button>
-          </VStack>
-          <HStack justifyContent="center">
-            <Text fontSize="sm" color="muted.700" fontWeight={400}>
-              I'm a new user.{' '}
-            </Text>
-            <Link
-              _text={{ color: 'cyan.500', bold: true, fontSize: 'sm' }}
-              href="#">
-              Sign Up
-            </Link>
-          </HStack>
+          <Footer handleSubmit={kba ? handleKbaSubmit : handleSubmit} />
         </VStack>
       </FormControl>
     </Box>
