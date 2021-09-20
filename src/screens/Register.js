@@ -8,14 +8,26 @@ function Register({ navigation }) {
   const [data, setData] = useState(null);
   useEffect(() => {
     async function start() {
-      await ForgeRockModule.frAuthStart();
-      const response = await ForgeRockModule.registerWithoutUI();
-      const parsed = JSON.parse(response)
-      setData(parsed.callbacks.map(res => ({ ...res, response: JSON.parse(res.response) })));
+      try {
+        await ForgeRockModule.frAuthStart();
+        await ForgeRockModule.performUserLogout();
+        const response = await ForgeRockModule.registerWithoutUI();
+        const parsed = JSON.parse(response);
+        console.log(parsed);
+        setData({
+          ...parsed,
+          callbacks: parsed.callbacks.map((res) => ({
+            ...res,
+            response: JSON.parse(res.response),
+          })),
+        });
+      } catch (err) {
+        console.error(err);
+      }
     }
     start();
   }, []);
-  console.log('data', data);
+
   return <RegisterContainer navigation={navigation} data={data} />;
 }
 

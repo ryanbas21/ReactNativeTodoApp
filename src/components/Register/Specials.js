@@ -1,16 +1,17 @@
 import React from 'react';
-import { Checkbox, FormControl } from 'native-base';
+import { VStack, Checkbox, FormControl, Text, Divider } from 'native-base';
 
-const Specials = ({ label, checked }) => (
-  <FormControl mb={5}>
-    <FormControl.Label
-      _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
-      {label}
-    </FormControl.Label>
-    <Checkbox 
-	isChecked={checked} 
-    />
-  </FormControl>
-);
+const Specials = ({ label, val, setter, terms = null }) => {
+  return (
+    <VStack>
+      <Checkbox.Group accessibilityLabel="terms-checkbox">
+        <Checkbox onChange={setter} isChecked={val} aria-label="terms">
+          <Text>{label}</Text>
+        </Checkbox>
+      </Checkbox.Group>
+      {terms !== null ? <Text>{terms}</Text> : null}
+    </VStack>
+  );
+};
 
 export { Specials };

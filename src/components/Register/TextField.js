@@ -1,14 +1,14 @@
 import React from 'react';
 import { FormControl, Input } from 'native-base';
 
-const Password = ({ label, setText }) => (
-  <FormControl mb={5}>
+const TextField = ({ label, setter }) => (
+  <>
     <FormControl.Label
       _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
       {label}
     </FormControl.Label>
-    <Input type="password" onChangeText={setText} />
-  </FormControl>
+    <Input type="text" onChangeText={setter} />
+  </>
 );
 
-export { Password };
+export { TextField };
