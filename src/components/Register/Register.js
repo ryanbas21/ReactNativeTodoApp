@@ -7,10 +7,11 @@ import { KBA } from './KBA';
 import { Password } from './Password';
 import { TextField } from './TextField';
 import { Specials } from './Specials';
+import { registrationTypeFactory } from './typeFactory.js';
 
 const { ForgeRockModule } = NativeModules;
 
-const map = {
+const callbackTypeToComponent = {
   ValidatedCreateUsernameCallback: ({ label, setter }) => (
     <Username label={label} setUsername={setter} key={label} />
   ),
@@ -57,52 +58,53 @@ function RegisterContainer({ data, navigation }) {
   const [specials, setSpecials] = useToggle(false);
   const [terms, setTerms] = useToggle(false);
 
-  const valMap = {
-    Username: username,
-    Password: password,
-    'First Name': first,
-    'Last Name': last,
-    'Email Address': email,
-    'Select a security question': securityQuestion,
-    'Send me special offers and services': specials,
-    'Send me news and updates': updates,
-    default: terms,
-  };
+  const getValueByType = registrationTypeFactory(
+    username,
+    password,
+    first,
+    last,
+    email,
+    specials,
+    updates,
+    securityQuestion,
+    terms,
+  );
 
-  const setterMap = {
-    Username: setUsername,
-    Password: setPassword,
-    'First Name': setFirst,
-    'Last Name': setLast,
-    'Email Address': setEmail,
-    'Send me special offers and services': setSpecials,
-    'Send me news and updates': setUpdates,
-    'Select a security question': setSecurityQuestion,
-    default: setTerms,
-  };
+  const setStateByType = registrationTypeFactory(
+    setUsername,
+    setPassword,
+    setFirst,
+    setLast,
+    setEmail,
+    setSpecials,
+    setUpdates,
+    setSecurityQuestion,
+    setTerms,
+  );
 
   const handleRegistrationSubmit = async () => {
     const callbacks = data.callbacks.map(
       ({ prompt: label, response: { input, ...all } }) => {
         if (label === 'Select a security question') {
-          input[0].value = valMap[label].question;
-          input[1].value = valMap[label].answer;
+          input[0].value = getValueByType(label).question;
+          input[1].value = getValueByType(label).answer;
         } else if (!label) {
-          input[0].value = valMap['default'];
+          input[0].value = getValueByType();
         } else {
-          input[0].value = valMap[label];
+          input[0].value = getValueByType(label);
         }
         return { ...all, input };
       },
     );
     try {
       const request = {
+        callbacks,
         authId: data.authId,
         authServiceId: data.authServiceId,
-        callbacks,
         header: data.pageHeader,
         description: data.pageDescription,
       };
+
       const response = await ForgeRockModule.next(JSON.stringify(request));
       if (response.type === 'LoginSuccess') {
         navigation.navigate('Todos');
@@ -125,23 +127,23 @@ function RegisterContainer({ data, navigation }) {
               response: { output },
             }) =>
               type === 'TermsAndConditionsCallback'
-                ? map[type]({
+                ? callbackTypeToComponent[type]({
                     label: 'TermsAndConditions',
                     terms: output[1].value,
-                    setter: setterMap['default'],
-                    val: valMap['default'],
+                    setter: setStateByType(),
+                    val: getValueByType(),
                   })
                 : questions
-                ? map[type]({
+                ? callbackTypeToComponent[type]({
                     label,
                     questions,
-                    setter: setterMap[label],
-                    val: valMap[label],
+                    setter: setStateByType(label),
+                    val: getValueByType(label),
                   })
-                : map[type]({
+                : callbackTypeToComponent[type]({
                     label,
-                    setter: setterMap[label],
-                    val: valMap[label],
+                    setter: setStateByType(label),
+                    val: getValueByType(label),
                   }),
           ) ?? null}
           <Button onPress={handleRegistrationSubmit}>Register</Button>
