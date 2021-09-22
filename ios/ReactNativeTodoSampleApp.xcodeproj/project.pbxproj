@@ -13,6 +13,8 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		19616F7156DF2B8FBB1D64D0 /* libPods-ReactNativeTodoSampleApp-ReactNativeTodoSampleAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 36E0D3A2A65BC92BB91C1B02 /* libPods-ReactNativeTodoSampleApp-ReactNativeTodoSampleAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		C189E42026EBAC7D002BAA9F /* FRAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC39252A26E7DCC900C58EB6 /* FRAuth.framework */; };
+		C189E42126EBAC7D002BAA9F /* FRAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EC39252A26E7DCC900C58EB6 /* FRAuth.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C368C0DB65E29380BA0575D8 /* libPods-ReactNativeTodoSampleApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A441A285867D566524683A0A /* libPods-ReactNativeTodoSampleApp.a */; };
 		EC39250F26E7CACD00C58EB6 /* ForgeRockModuleSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC39250D26E7CACD00C58EB6 /* ForgeRockModuleSwift.swift */; };
 		EC39251026E7CACD00C58EB6 /* ForgeRockModuleSwift.m in Sources */ = {isa = PBXBuildFile; fileRef = EC39250E26E7CACD00C58EB6 /* ForgeRockModuleSwift.m */; };
@@ -46,6 +48,20 @@
 			remoteInfo = FRAuthTests;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C189E42226EBAC7D002BAA9F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C189E42126EBAC7D002BAA9F /* FRAuth.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* ReactNativeTodoSampleAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactNativeTodoSampleAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C189E42026EBAC7D002BAA9F /* FRAuth.framework in Frameworks */,
 				C368C0DB65E29380BA0575D8 /* libPods-ReactNativeTodoSampleApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -234,6 +251,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				07682C3571207CBD65BBA095 /* [CP] Embed Pods Frameworks */,
 				1BEB885EB82EB46F11B55021 /* [CP] Copy Pods Resources */,
+				C189E42226EBAC7D002BAA9F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
