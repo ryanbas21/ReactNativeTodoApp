@@ -21,7 +21,7 @@ const callbackToComponentMap = {
   ),
 };
 
-function Login({ data, callbacks, navigation }) {
+function LoginContainer({ data, callbacks, navigation }) {
   const [username, setUsername] = useState('');
   const [pass, setPass] = useState('');
   const [err, setErr] = useState(null);
@@ -129,4 +129,4 @@ function Login({ data, callbacks, navigation }) {
   );
 }
 
-export { Login };
+export { LoginContainer };

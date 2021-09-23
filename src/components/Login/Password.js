@@ -12,7 +12,7 @@ const Password = ({ label, setPass }) => (
       _text={{ fontSize: 'xs', fontWeight: '700', color: 'cyan.500' }}
       alignSelf="flex-end"
       mt={1}>
-      Forget Password?
+      Forgot Password?
     </Link>
   </FormControl>
 );
