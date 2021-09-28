@@ -9,24 +9,29 @@ function Login({ navigation }) {
   const [nxt, setNxt] = useState(null);
 
   useEffect(() => {
-    async function logout() {
-      await ForgeRockModule.performUserLogout();
-    }
-    logout();
-  }, []);
-
-  useEffect(() => {
     (async () => {
-      await ForgeRockModule.frAuthStart();
-      const data = await ForgeRockModule.loginWithoutUI();
-      const next = JSON.parse(data);
-      setNxt(next);
-      setCallbacks(
-        next.callbacks.map((res) => ({
-          ...res,
-          response: JSON.parse(res.response),
-        })),
-      );
+      try {
+        const data = await ForgeRockModule.loginWithoutUI();
+        const next = JSON.parse(data);
+        setNxt(next);
+        setCallbacks(
+          next.callbacks.map((res) => ({
+            ...res,
+            response: JSON.parse(res.response),
+          })),
+        );
+      } catch (err) {
+        await ForgeRockModule.performUserLogout();
+        const data = await ForgeRockModule.loginWithoutUI();
+        const next = JSON.parse(data);
+        setNxt(next);
+        setCallbacks(
+          next.callbacks.map((res) => ({
+            ...res,
+            response: JSON.parse(res.response),
+          })),
+        );
+      }
     })();
   }, []);
 

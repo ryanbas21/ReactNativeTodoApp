@@ -1,29 +1,25 @@
-import React, { useState } from 'react';
-import { Box, Center, Divider, Heading, View } from 'native-base';
+import React, { useReducer } from 'react';
+import { Box, Center, Heading, View } from 'native-base';
 import { Todos } from './Todo';
 import { TodoInput } from './TodoInput';
+import { useToggle } from '../../hooks/useToggle.js';
+import { useTodos } from '../../hooks/useTodos';
+import { reducer } from './reducer';
 
 function TodoContainer() {
-  const [todos, setTodos] = useState([
-    { id: 1, title: 'Fake Task', isCompleted: false },
-  ]);
+  const [fetching, setFetch] = useToggle(false);
+  const [todos, dispatch] = useReducer(reducer, []);
 
-  const handleDelete = (index) => {
-    const temp = todos.filter((_, itemIdx) => itemIdx !== index);
-    setTodos(temp);
+  // useTodos(dispatch, setFetch, todos);
+
+  const handleDelete = (todo) => {
+    dispatch({ type: 'delete-todo', payload: todo._id });
   };
 
-  const handleStatusChange = (index) => {
-    const temp = todos.map((item, itemIdx) =>
-      itemIdx !== index
-        ? item
-        : {
-            ...item,
-            isCompleted: !item.isCompleted,
-          },
-    );
-    setTodos(temp);
-  };
+  const handleStatusChange = (todo) => ({
+    type: 'complete-todo',
+    payload: todo._id,
+  });
 
   return (
     <View>
@@ -55,16 +51,27 @@ function TodoContainer() {
           <Center>
             <Box p={4} bg={'#E0F7FA'} h={'100%'}>
               <Box w={'100%'} bg={'white'} h={'70%'} p={2}>
-                <TodoInput todos={todos} addTodo={setTodos} />
-                <Center>
-                  <Box alignItems="flex-start">
-                    <Todos
+                {fetching ? (
+                  'Loading'
+                ) : (
+                  <>
+                    <TodoInput
                       todos={todos}
-                      handleDelete={handleDelete}
-                      handleStatusChange={handleStatusChange}
+                      addTodo={(todo) =>
+                        dispatch({ type: 'add-todo', payload: todo })
+                      }
                     />
-                  </Box>
-                </Center>
+                    <Center>
+                      <Box alignItems="flex-start">
+                        <Todos
+                          todos={todos}
+                          handleDelete={handleDelete}
+                          handleStatusChange={handleStatusChange}
+                        />
+                      </Box>
+                    </Center>
+                  </>
+                )}
               </Box>
             </Box>
           </Center>

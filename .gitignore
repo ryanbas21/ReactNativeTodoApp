@@ -2,8 +2,12 @@
 #
 .DS_Store
 
+.env
+todos/*
+users/*
 # Xcode
 #
+.cert
 build/
 *.pbxuser
 !default.pbxuser

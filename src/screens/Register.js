@@ -9,11 +9,9 @@ function Register({ navigation }) {
   useEffect(() => {
     async function start() {
       try {
-        await ForgeRockModule.frAuthStart();
         await ForgeRockModule.performUserLogout();
         const response = await ForgeRockModule.registerWithoutUI();
         const parsed = JSON.parse(response);
-        console.log(parsed);
         setData({
           ...parsed,
           callbacks: parsed.callbacks.map((res) => ({

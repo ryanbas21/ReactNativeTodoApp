@@ -10,23 +10,20 @@ import {
   Divider,
   ScrollView,
 } from 'native-base';
-// import { AntDesign, Ionicons } from 'react-native-vector-icons';
-import { useTodos } from '../../hooks/useTodos';
 
-function Todo({ id, title, isCompleted, handleStatusChange, i }) {
-  useTodos();
+function Todo({ todo, handleStatusChange, handleDelete }) {
   return (
-    <Center key={id}>
+    <Center key={todo._id}>
       <Divider my={2} />
       <HStack width="100%" alignItems="center">
         <Checkbox
-          isChecked={isCompleted}
-          onChange={() => handleStatusChange(i)}
-          value={title}
+          isChecked={todo.isCompleted}
+          onChange={() => handleStatusChange(todo)}
+          value={todo.title}
           accessibilityLabel="todos checkbox"
         />
         <Center>
-          <Text mx={2} strikeThrough={isCompleted} fontSize="2xl">
+          <Text mx={2} strikeThrough={todo.isCompleted} fontSize="2xl">
             {title}
           </Text>
         </Center>
@@ -51,7 +48,13 @@ function Todos(props) {
     <ScrollView minWidth={'100%'} minH={200} maxH={400}>
       <VStack p={1}>
         {props.todos.map((todo, i) => (
-          <Todo {...todo} {...props} i={i} key={i} />
+          <Todo
+            todo={todo}
+            {...props}
+            key={i}
+            handleDelete={props.handleDelete}
+            handleStatusChange={props.handleStatusChange}
+          />
         ))}
       </VStack>
     </ScrollView>
