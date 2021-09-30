@@ -1,5 +1,6 @@
 import React from 'react';
-import { VStack, Button, HStack, Link, Text } from 'native-base';
+import { Link as NativeLink, VStack, Button, HStack, Text } from 'native-base';
+import { Link } from '@react-navigation/native';
 
 function Footer({ handleSubmit }) {
   return (
@@ -16,11 +17,9 @@ function Footer({ handleSubmit }) {
         <Text fontSize="sm" color="muted.700" fontWeight={400}>
           I'm a new user.{' '}
         </Text>
-        <Link
-          _text={{ color: 'cyan.500', bold: true, fontSize: 'sm' }}
-          href="#">
-          Sign Up
-        </Link>
+        <NativeLink>
+          <Link to={{ screen: 'Register' }}>Sign Up</Link>
+        </NativeLink>
       </HStack>
     </>
   );

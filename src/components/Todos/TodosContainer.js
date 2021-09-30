@@ -1,25 +1,40 @@
 import React, { useReducer } from 'react';
+import { NativeModules } from 'react-native';
 import { Box, Center, Heading, View } from 'native-base';
 import { Todos } from './Todo';
 import { TodoInput } from './TodoInput';
 import { useToggle } from '../../hooks/useToggle.js';
 import { useTodos } from '../../hooks/useTodos';
 import { reducer } from './reducer';
+import { request } from '../utilities/request';
+
+const { ForgeRockModule } = NativeModules;
 
 function TodoContainer() {
   const [fetching, setFetch] = useToggle(false);
   const [todos, dispatch] = useReducer(reducer, []);
 
-  // useTodos(dispatch, setFetch, todos);
+  useTodos(dispatch, setFetch, todos);
 
-  const handleDelete = (todo) => {
-    dispatch({ type: 'delete-todo', payload: todo._id });
+  const editTodo = async ({ _id, title }) => {
+    dispatch({ type: 'edit-todo', payload: { _id, title } });
+    await request('POST', `${_id}`, { title });
+  };
+  const handleDelete = async (todo) => {
+    await request('DELETE', todo._id, todo);
+    dispatch({
+      type: 'delete-todo',
+      payload: { completed: !todo.completed, _id: todo._id },
+    });
   };
 
-  const handleStatusChange = (todo) => ({
-    type: 'complete-todo',
-    payload: todo._id,
-  });
+  const handleStatusChange = async ({ _id, completed }) => {
+    const todo = await request('POST', `${_id}`, { completed: !completed });
+    dispatch({
+      type: 'complete-todo',
+      payload: todo,
+    });
+  };
 
   return (
     <View>
@@ -55,16 +70,12 @@ function TodoContainer() {
                   'Loading'
                 ) : (
                   <>
-                    <TodoInput
-                      todos={todos}
-                      addTodo={(todo) =>
-                        dispatch({ type: 'add-todo', payload: todo })
-                      }
-                    />
+                    <TodoInput todos={todos} dispatch={dispatch} />
                     <Center>
                       <Box alignItems="flex-start">
                         <Todos
                           todos={todos}
+                          editTodo={editTodo}
                           handleDelete={handleDelete}
                           handleStatusChange={handleStatusChange}
                         />

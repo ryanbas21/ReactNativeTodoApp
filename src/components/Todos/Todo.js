@@ -10,33 +10,47 @@ import {
   Divider,
   ScrollView,
 } from 'native-base';
+import { EditModal } from './editModal';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-function Todo({ todo, handleStatusChange, handleDelete }) {
+function Todo({ todo, handleStatusChange, handleDelete, editTodo }) {
   return (
-    <Center key={todo._id}>
+    <Center key={todo?._id ?? Math.random()}>
       <Divider my={2} />
       <HStack width="100%" alignItems="center">
         <Checkbox
-          isChecked={todo.isCompleted}
+          isChecked={todo.completed}
           onChange={() => handleStatusChange(todo)}
           value={todo.title}
           accessibilityLabel="todos checkbox"
         />
         <Center>
-          <Text mx={2} strikeThrough={todo.isCompleted} fontSize="2xl">
-            {title}
+          <Text mx={2} strikeThrough={todo.completed} fontSize="2xl">
+            {todo.title}
           </Text>
         </Center>
         <Menu
-          alignItems="flex-end"
+          closeOnSelect={true}
+          alignItems="center"
           justifyContent="center"
           placement={'right'}
           trigger={(triggerProps) => (
-            <Pressable
-              accessibilityLabel="More options menu"
-              {...triggerProps}></Pressable>
+            <Pressable accessibilityLabel="More options menu" {...triggerProps}>
+              <Icon name="dots-vertical" />
+            </Pressable>
           )}>
-          <Menu.Item alignItems={'flex-end'}></Menu.Item>
+          <Menu.Item
+            closeOnSelect={true}
+            alignItems={'flex-start'}
+            onPress={() => handleDelete(todo)}>
+            <Icon name="trash-can-outline">Delete</Icon>
+          </Menu.Item>
+          <Menu.Item
+            closeOnSelect={true}
+            alignItems={'flex-start'}
+            onPress={() => editTodo(todo)}>
+            <EditModal todo={todo} editTodo={editTodo} />
+          </Menu.Item>
         </Menu>
       </HStack>
     </Center>
@@ -47,11 +61,11 @@ function Todos(props) {
   return (
     <ScrollView minWidth={'100%'} minH={200} maxH={400}>
       <VStack p={1}>
-        {props.todos.map((todo, i) => (
+        {props.todos.map((todo) => (
           <Todo
             todo={todo}
-            {...props}
-            key={i}
+            key={todo._id}
+            editTodo={props.editTodo}
             handleDelete={props.handleDelete}
             handleStatusChange={props.handleStatusChange}
           />

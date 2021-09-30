@@ -31,6 +31,7 @@ export async function auth(req, res, next) {
   try {
     if (req.headers.authorization) {
       const [_, token] = req.headers.authorization.split(' ');
+      console.log('token', token);
       response = await request
         .post(`${AM_URL}oauth2/realms/root/realms/${REALM_PATH}/introspect`)
         .key(SEC_KEY)

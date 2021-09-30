@@ -16,12 +16,12 @@
  * @param {Object} action.payload - The new state to be applied
  * @returns {Array} - the new array of update todos
  */
-export function reducer(state, action) {
+export function reducer(state = [], action = { payload: [] }) {
   switch (action.type) {
     case 'init-todos':
-      return [...action.payload.todos];
+      return action.payload;
     case 'add-todo':
-      return [action.payload.todo, ...state];
+      return [action.payload, ...state];
     case 'delete-todo':
       return state.filter((todo) => todo._id !== action.payload._id);
     case 'complete-todo':
@@ -29,7 +29,7 @@ export function reducer(state, action) {
         if (todo._id === action.payload._id) {
           return {
             ...todo,
-            isCompleted: action.payload.isCompleted,
+            completed: action.payload.completed,
           };
         } else {
           return todo;

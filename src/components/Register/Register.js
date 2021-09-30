@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { NativeModules } from 'react-native';
 import { Text, Button, Box, FormControl, ScrollView } from 'native-base';
+
 import { useToggle } from '../../hooks/useToggle';
+import { AppContext } from '../../global-state.js';
 import { Username } from './Username';
 import { KBA } from './KBA';
 import { Password } from './Password';
@@ -50,6 +52,7 @@ function RegisterContainer({ data, navigation }) {
   const [first, setFirst] = useState('');
   const [last, setLast] = useState('');
   const [email, setEmail] = useState('');
+  const [, { setAuthentication }] = useContext(AppContext);
   const [securityQuestion, setSecurityQuestion] = useState({
     question: '',
     answer: '',
@@ -107,6 +110,7 @@ function RegisterContainer({ data, navigation }) {
 
       const response = await ForgeRockModule.next(JSON.stringify(request));
       if (response.type === 'LoginSuccess') {
+        setAuthentication(true);
         navigation.navigate('Todos');
       } else if (response.type === 'LoginFailure') {
         // handle failure

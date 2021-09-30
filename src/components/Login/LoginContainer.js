@@ -3,11 +3,9 @@ import { Box, VStack, FormControl } from 'native-base';
 import { NativeModules } from 'react-native';
 
 import { AppContext } from '../../global-state.js';
-import { useToggle } from '../../hooks/useToggle';
 import { Password } from './Password';
 import { Footer } from './Footer';
 import { Username } from './Username';
-import { Loggedin } from './Loggedin';
 import { Header } from './Header';
 
 const { ForgeRockModule } = NativeModules;
@@ -37,7 +35,7 @@ function LoginContainer({ data, callbacks, navigation }) {
     PasswordCallback: pass,
     NameCallback: username,
   };
-
+  
   useEffect(() => {
     const loginSuccess = async () => {
       /*
@@ -47,7 +45,6 @@ function LoginContainer({ data, callbacks, navigation }) {
        */
       try {
         const token = await ForgeRockModule.getAccessToken();
-        console.log(token);
         if (token !== undefined) setAuthentication(true);
       } catch (err) {
         setErr('Error authenticating user, no access token');

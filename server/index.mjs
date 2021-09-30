@@ -18,7 +18,6 @@ import { env } from 'process';
 import { AM_URL, PORT, SEC_CERT, SEC_KEY } from './constants.mjs';
 import routes from './routes.mjs';
 
-console.log(AM_URL, PORT, SEC_CERT, SEC_KEY);
 /**
  * Create and configure Express
  */

@@ -8,12 +8,6 @@ const Password = ({ label, setPass }) => (
       {label}
     </FormControl.Label>
     <Input type="password" onChangeText={setPass} />
-    <Link
-      _text={{ fontSize: 'xs', fontWeight: '700', color: 'cyan.500' }}
-      alignSelf="flex-end"
-      mt={1}>
-      Forgot Password?
-    </Link>
   </FormControl>
 );
 
