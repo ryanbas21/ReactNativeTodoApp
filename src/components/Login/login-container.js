@@ -55,6 +55,9 @@ function LoginContainer({ step, callbacks, error, setLoading }) {
     }
   }, [isAuthenticated]);
 
+  const handleFailure = (error) => {
+    setErr('Invalid username or password');
+  };
   const handleSubmit = async () => {
     /*
      * We need to mutate the callbacks map in order to send the updated values through the next step
@@ -75,11 +78,15 @@ function LoginContainer({ step, callbacks, error, setLoading }) {
        * added to the form
        */
       const response = await ForgeRockModule.next(request);
+
       if (response.type === 'LoginSuccess') {
         setAuthentication(true);
         setLoading(false);
       }
     } catch (error) {
+      if (error && error.message) {
+        handleFailure(error);
+      }
       setAuthentication(false);
       setLoading(false);
     }

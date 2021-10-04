@@ -6,6 +6,7 @@ import { useToggle } from '../../hooks/useToggle.js';
 import { useTodos } from '../../hooks/useTodos';
 import { reducer } from './reducer';
 import { request } from '../utilities/request';
+import { Loading } from '../utilities/loading';
 
 function TodoContainer() {
   const [fetching, setFetch] = useToggle(false);
@@ -33,16 +34,18 @@ function TodoContainer() {
     });
   };
 
-  return (
+  return fetching ? (
+    <Loading message={'Loading User Data'} />
+  ) : (
     <View>
       <Center>
         <Box
           shadow={1}
           _light={{
-            backgroundColor: 'blue.50',
+            backgroundColor: 'white',
           }}
           _dark={{
-            backgroundColor: 'blue.700',
+            backgroundColor: 'white',
           }}>
           <Heading
             size="2xl"
@@ -57,30 +60,25 @@ function TodoContainer() {
               base: 'flex-start',
               md: 'flex-start',
             }}>
-            Create and Manage your todos
+            Your Todos
           </Heading>
-
+          <Heading
+            size="sm"
+            alignSelf={{
+              base: 'flex-start',
+              md: 'flex-start',
+            }}>
+            Create and manage your todos
+          </Heading>
           <Center>
-            <Box p={4} bg={'#E0F7FA'} h={'100%'}>
-              <Box w={'100%'} bg={'white'} h={'70%'} p={2}>
-                {fetching ? (
-                  'Loading'
-                ) : (
-                  <>
-                    <TodoInput todos={todos} dispatch={dispatch} />
-                    <Center>
-                      <Box alignItems="flex-start">
-                        <Todos
-                          todos={todos}
-                          editTodo={editTodo}
-                          handleDelete={handleDelete}
-                          handleStatusChange={handleStatusChange}
-                        />
-                      </Box>
-                    </Center>
-                  </>
-                )}
-              </Box>
+            <Box h={'100%'} w={'100%'} bg={'white'} p={2}>
+              <TodoInput todos={todos} dispatch={dispatch} />
+              <Todos
+                todos={todos}
+                editTodo={editTodo}
+                handleDelete={handleDelete}
+                handleStatusChange={handleStatusChange}
+              />
             </Box>
           </Center>
         </Box>

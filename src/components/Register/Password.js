@@ -1,19 +1,19 @@
 import React from 'react';
-import { handleFailedPolicies } from '../utilities/failedPolicies';
 import { FormControl, Input } from 'native-base';
+import { handleFailedPolicies } from '../utilities/failedPolicies';
 
-const Username = ({ label, setUsername, output }) => {
+const Password = ({ label, setter, output }) => {
   const error = handleFailedPolicies(output);
   return (
     <FormControl isInvalid={error}>
+      <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>
       <FormControl.Label
         _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
         {label}
       </FormControl.Label>
-      <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>
-      <Input onChangeText={setUsername} />
+      <Input type="password" onChangeText={setter} />
     </FormControl>
   );
 };
 
-export { Username };
+export { Password };
