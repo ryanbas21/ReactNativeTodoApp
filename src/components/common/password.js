@@ -1,14 +1,14 @@
 import React from 'react';
 import { FormControl, Input } from 'native-base';
 
-const Username = ({ label, setUsername }) => (
-  <FormControl>
+const Password = ({ label, setPass }) => (
+  <FormControl mb={5}>
     <FormControl.Label
       _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
       {label}
     </FormControl.Label>
-    <Input onChangeText={setUsername} />
+    <Input type="password" onChangeText={setPass} />
   </FormControl>
 );
 
-export { Username };
+export { Password };

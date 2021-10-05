@@ -4,11 +4,11 @@ import { Text, Button, Box, FormControl, ScrollView } from 'native-base';
 
 import { useToggle } from '../../hooks/useToggle';
 import { AppContext } from '../../global-state.js';
-import { Username } from './Username';
-import { KBA } from './KBA';
-import { Password } from './Password';
-import { TextField } from './TextField';
-import { Specials } from './Specials';
+import { Username } from '../common/username';
+import { Password } from '../common/password';
+import { KBA } from './kba';
+import { TextField } from './text-field';
+import { Specials } from './specials';
 import { registrationTypeFactory } from './typeFactory.js';
 
 const { ForgeRockModule } = NativeModules;
@@ -24,7 +24,7 @@ const callbackTypeToComponent = {
     <Specials label={label} setter={setter} val={val} key={label} />
   ),
   ValidatedCreatePasswordCallback: ({ label, setter, val }) => (
-    <Password label={label} setter={setter} val={val} key={label} />
+    <Password label={label} setPass={setter} val={val} key={label} />
   ),
   TermsAndConditionsCallback: ({ label, setter, val, terms }) => (
     <Specials
@@ -86,6 +86,7 @@ function RegisterContainer({ data, navigation }) {
   );
 
   const handleRegistrationSubmit = async () => {
+    setLoading(true);
     const callbacks = data.callbacks.map(
       ({ prompt: label, response: { input, ...all } }) => {
         if (label === 'Select a security question') {
@@ -115,7 +116,9 @@ function RegisterContainer({ data, navigation }) {
       } else if (response.type === 'LoginFailure') {
         // handle failure
       }
-    } catch (err) {}
+    } catch (err) {
+      setLoading(false);
+    }
   };
 
   return (

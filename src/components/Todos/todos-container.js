@@ -1,14 +1,11 @@
 import React, { useReducer } from 'react';
-import { NativeModules } from 'react-native';
 import { Box, Center, Heading, View } from 'native-base';
-import { Todos } from './Todo';
-import { TodoInput } from './TodoInput';
+import { Todos } from './todo';
+import { TodoInput } from './todo-input';
 import { useToggle } from '../../hooks/useToggle.js';
 import { useTodos } from '../../hooks/useTodos';
 import { reducer } from './reducer';
 import { request } from '../utilities/request';
-
-const { ForgeRockModule } = NativeModules;
 
 function TodoContainer() {
   const [fetching, setFetch] = useToggle(false);

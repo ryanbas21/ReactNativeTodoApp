@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TodoContainer } from '../components/Todos/';
+import { TodoContainer } from '../components/Todos';
 import { View } from 'react-native';
 
 function Todos() {

@@ -1,1 +1,1 @@
-export { RegisterContainer } from './Register';
+export { RegisterContainer } from './register';

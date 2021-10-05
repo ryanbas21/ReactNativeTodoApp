@@ -3,10 +3,10 @@ import { Box, VStack, FormControl } from 'native-base';
 import { NativeModules } from 'react-native';
 
 import { AppContext } from '../../global-state.js';
-import { Password } from './Password';
-import { Footer } from './Footer';
-import { Username } from './Username';
-import { Header } from './Header';
+import { Password } from '../common/password';
+import { Username } from '../common/username';
+import { Footer } from './footer';
+import { Header } from './header';
 
 const { ForgeRockModule } = NativeModules;
 
@@ -20,7 +20,7 @@ const callbackToComponentMap = {
   ),
 };
 
-function LoginContainer({ step, callbacks, error }) {
+function LoginContainer({ step, callbacks, error, setLoading }) {
   const [username, setUsername] = useState('');
   const [pass, setPass] = useState('');
   const [err, setErr] = useState(error);
@@ -60,6 +60,7 @@ function LoginContainer({ step, callbacks, error }) {
      * We need to mutate the callbacks map in order to send the updated values through the next step
      * in the journey
      */
+    setLoading(true);
     const newCallbacks = callbacks.map(({ type, response }) => {
       response.input[0].value = getValueByType[type];
       return response;
@@ -76,13 +77,14 @@ function LoginContainer({ step, callbacks, error }) {
       const response = await ForgeRockModule.next(request);
       if (response.type === 'LoginSuccess') {
         setAuthentication(true);
+        setLoading(false);
       }
     } catch (error) {
       setAuthentication(false);
+      setLoading(false);
     }
   };
 
-  // this will be removed when protected route impl. is done
   return (
     <Box safeArea flex={1} p={2} w="90%" mx="auto">
       <Header />

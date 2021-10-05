@@ -8,10 +8,8 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import React, { useContext } from 'react';
+import React from 'react';
 import { Spinner, VStack, Heading } from 'native-base';
-
-import { AppContext } from '../../global-state';
 
 /**
  * @function Loading - Used to display a loading message
@@ -19,15 +17,15 @@ import { AppContext } from '../../global-state';
  * @param {string} props.message - The message string object passed from the parent component
  * @returns {Object} - React component object
  */
-export default function Loading({ message }) {
-  const [state] = useContext(AppContext);
-
+function Loading({ message }) {
   return (
-    <VStack space={4} alignItems="center">
+    <VStack space={4} alignItems="center" justifyContent={'center'}>
+      <Spinner size="lg" />
       <Heading textAlign="center" mb="10">
         {message}
       </Heading>
-      <Spinner size="lg" />
     </VStack>
   );
 }
+
+export { Loading };

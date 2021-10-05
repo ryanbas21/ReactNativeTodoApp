@@ -10,7 +10,7 @@ import {
   Divider,
   ScrollView,
 } from 'native-base';
-import { EditModal } from './editModal';
+import { EditModal } from './edit-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function Todo({ todo, handleStatusChange, handleDelete, editTodo }) {

@@ -1,5 +1,7 @@
-import React from 'react';
-import { Login, Todos, Register } from '../screens';
+import React, { useContext } from 'react';
+import { Home, Login, Todos, Register } from '../screens';
+import { AppContext } from '../global-state';
+
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -52,7 +54,17 @@ const LoginRoutes = () => (
 );
 
 const TodoRoutes = () => (
-  <Tab.Navigator initialRoute="Todos">
+  <Tab.Navigator initialRoute="Home">
+    <Tab.Screen
+      name="Home"
+      component={Home}
+      options={{
+        tabBarLabel: 'Home',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="home" color={color} size={size} />
+        ),
+      }}
+    />
     <Tab.Screen
       name="Todos"
       component={Todos}
