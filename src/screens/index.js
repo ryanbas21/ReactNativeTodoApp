@@ -1,3 +1,4 @@
-export { Login } from './Login';
-export { Todos } from './Todos';
-export { Register } from './Register';
+export { Login } from './login';
+export { Todos } from './todos';
+export { Register } from './register';
+export { Home } from './home';

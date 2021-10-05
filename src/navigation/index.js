@@ -1,29 +1,53 @@
-import * as React from 'react';
+import React, { useContext, useEffect } from 'react';
+import { NativeModules } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Theme from '../theme/index';
-import { Login, Todos, Register } from '../screens';
 
-const Tab = createBottomTabNavigator();
+import Theme from '../theme/index';
+import { AppContext, useGlobalStateMgmt } from '../global-state';
+import { useToggle } from '../hooks/useToggle';
+import { LoginRoutes, TodoRoutes } from '../navigation/routes';
+
+const { ForgeRockModule } = NativeModules;
 
 function Navigation() {
+  const [auth, setAuth] = useToggle();
+
+  useEffect(() => {
+    async function checkForToken() {
+      try {
+        if (!auth) {
+          await ForgeRockModule.frAuthStart();
+          const token = await ForgeRockModule.getAccessToken();
+          setAuth(Boolean(token));
+        }
+      } catch (err) {}
+    }
+    checkForToken();
+  }, [auth]);
+
+  const stateMgmt = useGlobalStateMgmt({
+    isAuthenticated: auth,
+  });
+
+  const [{ isAuthenticated }] = stateMgmt;
+
   return (
     <Theme>
-      <NavigationContainer theme={DefaultTheme}>
-        <RootNavigator />
-      </NavigationContainer>
+      <AppContext.Provider value={stateMgmt}>
+        <NavigationContainer
+          theme={DefaultTheme}
+          isAuthenticated={isAuthenticated}>
+          <RootNavigator />
+        </NavigationContainer>
+      </AppContext.Provider>
     </Theme>
   );
 }
 
 function RootNavigator() {
-  return (
-    <Tab.Navigator initialRouteName="Todos">
-      <Tab.Screen name="Todos" component={Todos} />
-      <Tab.Screen name="Login" component={Login} />
-      <Tab.Screen name="Register" component={Register} />
-    </Tab.Navigator>
-  );
+  const [{ isAuthenticated }] = useContext(AppContext);
+
+  return isAuthenticated ? <TodoRoutes /> : <LoginRoutes />;
 }
 
 export default Navigation;

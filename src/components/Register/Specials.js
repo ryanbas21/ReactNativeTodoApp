@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack, Checkbox, FormControl, Text, Divider } from 'native-base';
+import { VStack, Checkbox, Text } from 'native-base';
 
 const Specials = ({ label, val, setter, terms = null }) => {
   return (

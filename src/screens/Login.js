@@ -1,41 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { LoginContainer } from '../components/Login';
+import { Loading } from '../components/utilities/loading';
 import { NativeModules } from 'react-native';
 
 const { ForgeRockModule } = NativeModules;
 
-function Login({ navigation }) {
+function Login() {
+  const [loading, setLoading] = useState(true);
   const [callbacks, setCallbacks] = useState([]);
-  const [nxt, setNxt] = useState(null);
-
-  useEffect(() => {
-    async function logout() {
-      await ForgeRockModule.performUserLogout();
-    }
-    logout();
-  }, []);
+  const [step, setStep] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     (async () => {
-      await ForgeRockModule.frAuthStart();
-      const data = await ForgeRockModule.loginWithoutUI();
-      const next = JSON.parse(data);
-      setNxt(next);
-      setCallbacks(
-        next.callbacks.map((res) => ({
-          ...res,
-          response: JSON.parse(res.response),
-        })),
-      );
+      try {
+        const data = await ForgeRockModule.loginWithoutUI();
+        const next = JSON.parse(data);
+        setLoading(false);
+
+        setStep(next);
+        setCallbacks(
+          next.callbacks.map((res) => ({
+            ...res,
+            response: JSON.parse(res.response),
+          })),
+        );
+      } catch (err) {
+        await ForgeRockModule.performUserLogout();
+        setError(err.message);
+      }
     })();
   }, []);
 
-  return (
+  return loading ? (
+    <Loading message={'Checking your session'} />
+  ) : (
     <LoginContainer
-      data={nxt}
+      step={step}
       callbacks={callbacks}
-      setNxt={setNxt}
-      navigation={navigation}
+      error={error}
+      setLoading={setLoading}
     />
   );
 }

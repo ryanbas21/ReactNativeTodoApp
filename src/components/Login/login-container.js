@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, VStack, FormControl } from 'native-base';
 import { NativeModules } from 'react-native';
 
-import { useToggle } from '../../hooks/useToggle';
-import { Password } from './Password';
-import { Footer } from './Footer';
-import { Username } from './Username';
-import { Loggedin } from './Loggedin';
-import { Header } from './Header';
+import { AppContext } from '../../global-state.js';
+import { Password } from '../common/password';
+import { Username } from '../common/username';
+import { Footer } from './footer';
+import { Header } from './header';
 
 const { ForgeRockModule } = NativeModules;
 
@@ -21,12 +20,11 @@ const callbackToComponentMap = {
   ),
 };
 
-function LoginContainer({ data, callbacks, navigation }) {
+function LoginContainer({ step, callbacks, error, setLoading }) {
   const [username, setUsername] = useState('');
   const [pass, setPass] = useState('');
-  const [err, setErr] = useState(null);
-  const [user, setUser] = useState(null);
-  const [isAuth, setAuth] = useToggle(false);
+  const [err, setErr] = useState(error);
+  const [{ isAuthenticated }, { setAuthentication }] = useContext(AppContext);
 
   const setStateByType = {
     PasswordCallback: setPass,
@@ -46,45 +44,29 @@ function LoginContainer({ data, callbacks, navigation }) {
        * token we have completed the journey
        */
       try {
-        await ForgeRockModule.getAccessToken();
-        const user = await ForgeRockModule.getUserInfo();
-        setUser(user);
-        navigation.navigate('Todos');
+        const token = await ForgeRockModule.getAccessToken();
+        if (token !== undefined) setAuthentication(true);
       } catch (err) {
         setErr('Error authenticating user, no access token');
-        setUser(null);
       }
     };
-    if (isAuth) {
+    if (isAuthenticated) {
       loginSuccess();
     }
-  }, [isAuth]);
-
-  const handleLogout = async () => {
-    try {
-      // utilize the SDK to log a user out
-      await ForgeRockModule.performUserLogout();
-      // reset state values upon successfully logging a user out
-      setUser(null);
-      setUsername(null);
-      setPass(null);
-      setAuth(false);
-    } catch (err) {
-      setErr('Error Logging Out');
-    }
-  };
+  }, [isAuthenticated]);
 
   const handleSubmit = async () => {
     /*
      * We need to mutate the callbacks map in order to send the updated values through the next step
      * in the journey
      */
+    setLoading(true);
     const newCallbacks = callbacks.map(({ type, response }) => {
       response.input[0].value = getValueByType[type];
       return response;
     });
 
-    const request = JSON.stringify({ ...data, callbacks: newCallbacks });
+    const request = JSON.stringify({ ...step, callbacks: newCallbacks });
 
     try {
       /*
@@ -94,17 +76,16 @@ function LoginContainer({ data, callbacks, navigation }) {
        */
       const response = await ForgeRockModule.next(request);
       if (response.type === 'LoginSuccess') {
-        setAuth();
+        setAuthentication(true);
+        setLoading(false);
       }
     } catch (error) {
-      setAuth(false);
+      setAuthentication(false);
+      setLoading(false);
     }
   };
 
-  // this will be removed when protected route impl. is done
-  return user ? (
-    <Loggedin user={user} handleLogout={handleLogout} />
-  ) : (
+  return (
     <Box safeArea flex={1} p={2} w="90%" mx="auto">
       <Header />
       <FormControl isInvalid={Boolean(err)}>

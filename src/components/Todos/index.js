@@ -1,1 +1,1 @@
-export { TodoContainer } from './TodosContainer';
+export { TodoContainer } from './todos-container';
