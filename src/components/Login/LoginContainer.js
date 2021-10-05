@@ -20,10 +20,10 @@ const callbackToComponentMap = {
   ),
 };
 
-function LoginContainer({ data, callbacks, navigation }) {
+function LoginContainer({ step, callbacks, error }) {
   const [username, setUsername] = useState('');
   const [pass, setPass] = useState('');
-  const [err, setErr] = useState(null);
+  const [err, setErr] = useState(error);
   const [{ isAuthenticated }, { setAuthentication }] = useContext(AppContext);
 
   const setStateByType = {
@@ -35,7 +35,7 @@ function LoginContainer({ data, callbacks, navigation }) {
     PasswordCallback: pass,
     NameCallback: username,
   };
-  
+
   useEffect(() => {
     const loginSuccess = async () => {
       /*
@@ -50,23 +50,10 @@ function LoginContainer({ data, callbacks, navigation }) {
         setErr('Error authenticating user, no access token');
       }
     };
-    if (isAuthenticated === true) {
+    if (isAuthenticated) {
       loginSuccess();
     }
   }, [isAuthenticated]);
-
-  const handleLogout = async () => {
-    try {
-      // utilize the SDK to log a user out
-      await ForgeRockModule.performUserLogout();
-      // reset state values upon successfully logging a user out
-      setUsername(null);
-      setPass(null);
-      setAuthentication(false); // update global state value on logout
-    } catch (err) {
-      setErr('Error Logging Out');
-    }
-  };
 
   const handleSubmit = async () => {
     /*
@@ -78,7 +65,7 @@ function LoginContainer({ data, callbacks, navigation }) {
       return response;
     });
 
-    const request = JSON.stringify({ ...data, callbacks: newCallbacks });
+    const request = JSON.stringify({ ...step, callbacks: newCallbacks });
 
     try {
       /*

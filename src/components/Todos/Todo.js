@@ -36,14 +36,14 @@ function Todo({ todo, handleStatusChange, handleDelete, editTodo }) {
           placement={'right'}
           trigger={(triggerProps) => (
             <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-              <Icon name="dots-vertical" />
+              <Icon name="dots-horizontal" />
             </Pressable>
           )}>
           <Menu.Item
             closeOnSelect={true}
             alignItems={'flex-start'}
             onPress={() => handleDelete(todo)}>
-            <Icon name="trash-can-outline">Delete</Icon>
+            <Text>Delete</Text>
           </Menu.Item>
           <Menu.Item
             closeOnSelect={true}

@@ -28,7 +28,7 @@ function TodoInput({ dispatch }) {
         placeholder="Add a Todo"
         m={2}
       />
-      <Button m={2} onPress={addTodo} accessibilityLabel="What needs doing">
+      <Button m={2} onPress={addTodo}>
         Add Todo
       </Button>
     </HStack>

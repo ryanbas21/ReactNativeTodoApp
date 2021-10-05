@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import { Input, Button, Modal } from 'native-base';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Text, Input, Button, Modal } from 'native-base';
 
 export const EditModal = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [text, onChange] = useState('');
   return (
     <>
-      <Icon name="content-save-edit" onPress={() => setShowModal(true)}>
-        Edit
-      </Icon>
+      <Text onPress={() => setShowModal(true)}>Edit</Text>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <Modal.Content maxWidth="400px">
           <Modal.CloseButton />

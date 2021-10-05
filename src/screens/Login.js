@@ -4,16 +4,18 @@ import { NativeModules } from 'react-native';
 
 const { ForgeRockModule } = NativeModules;
 
-function Login({ navigation }) {
+function Login() {
   const [callbacks, setCallbacks] = useState([]);
-  const [nxt, setNxt] = useState(null);
+  const [step, setStep] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     (async () => {
       try {
         const data = await ForgeRockModule.loginWithoutUI();
         const next = JSON.parse(data);
-        setNxt(next);
+
+        setStep(next);
         setCallbacks(
           next.callbacks.map((res) => ({
             ...res,
@@ -21,28 +23,12 @@ function Login({ navigation }) {
           })),
         );
       } catch (err) {
-        await ForgeRockModule.performUserLogout();
-        const data = await ForgeRockModule.loginWithoutUI();
-        const next = JSON.parse(data);
-        setNxt(next);
-        setCallbacks(
-          next.callbacks.map((res) => ({
-            ...res,
-            response: JSON.parse(res.response),
-          })),
-        );
+        setError(err.message);
       }
     })();
   }, []);
 
-  return (
-    <LoginContainer
-      data={nxt}
-      callbacks={callbacks}
-      setNxt={setNxt}
-      navigation={navigation}
-    />
-  );
+  return <LoginContainer step={step} callbacks={callbacks} error={error} />;
 }
 
 export { Login };
