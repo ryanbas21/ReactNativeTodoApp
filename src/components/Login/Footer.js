@@ -10,7 +10,7 @@ function Footer({ handleSubmit }) {
           colorScheme="cyan"
           _text={{ color: 'white' }}
           onPress={handleSubmit}>
-          Login
+          Sign in
         </Button>
       </VStack>
       <HStack justifyContent="center">

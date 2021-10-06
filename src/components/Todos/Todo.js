@@ -15,20 +15,18 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function Todo({ todo, handleStatusChange, handleDelete, editTodo }) {
   return (
-    <Center key={todo?._id ?? Math.random()}>
+    <React.Fragment>
       <Divider my={2} />
-      <HStack width="100%" alignItems="center">
+      <HStack width="100%" alignItems="center" justifyContent="space-between">
         <Checkbox
           isChecked={todo.completed}
           onChange={() => handleStatusChange(todo)}
           value={todo.title}
-          accessibilityLabel="todos checkbox"
-        />
-        <Center>
+          accessibilityLabel="todos checkbox">
           <Text mx={2} strikeThrough={todo.completed} fontSize="2xl">
             {todo.title}
           </Text>
-        </Center>
+        </Checkbox>
         <Menu
           closeOnSelect={true}
           alignItems="center"
@@ -53,7 +51,7 @@ function Todo({ todo, handleStatusChange, handleDelete, editTodo }) {
           </Menu.Item>
         </Menu>
       </HStack>
-    </Center>
+    </React.Fragment>
   );
 }
 

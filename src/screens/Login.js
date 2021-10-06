@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { LoginContainer } from '../components/Login';
-import { Loading } from '../components/utilities/loading';
 import { NativeModules } from 'react-native';
 
 const { ForgeRockModule } = NativeModules;
@@ -32,14 +31,13 @@ function Login() {
     })();
   }, []);
 
-  return loading ? (
-    <Loading message={'Checking your session'} />
-  ) : (
+  return (
     <LoginContainer
       step={step}
       callbacks={callbacks}
       error={error}
       setLoading={setLoading}
+      loading={loading}
     />
   );
 }

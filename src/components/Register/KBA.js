@@ -1,10 +1,15 @@
 import React from 'react';
 import { FormControl, TextField, Select } from 'native-base';
 
-function KBA({ label, questions = [], val, setter }) {
+import { handleFailedPolicies } from '../utilities/failedPolicies';
+
+function KBA({ label, questions = [], val, setter, output }) {
+  const error = handleFailedPolicies(output) || '';
   return (
-    <>
+    <FormControl isInvalid={error}>
+      <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>
       <FormControl.Label>{label}</FormControl.Label>
+
       <Select
         accessibilityLabel="Select Security Question"
         placeholder="Select Security Question"
@@ -17,7 +22,7 @@ function KBA({ label, questions = [], val, setter }) {
       <TextField
         onChangeText={(itemValue) => setter({ ...val, answer: itemValue })}
       />
-    </>
+    </FormControl>
   );
 }
 

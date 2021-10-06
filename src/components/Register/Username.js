@@ -1,6 +1,6 @@
 import React from 'react';
-import { handleFailedPolicies } from '../utilities/failedPolicies';
 import { FormControl, Input } from 'native-base';
+import { handleFailedPolicies } from '../utilities/failedPolicies';
 
 const Username = ({ label, setUsername, output }) => {
   const error = handleFailedPolicies(output);
@@ -10,7 +10,9 @@ const Username = ({ label, setUsername, output }) => {
         _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
         {label}
       </FormControl.Label>
-      <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>
+      <FormControl.ErrorMessage>
+        {handleFailedPolicies(output)}
+      </FormControl.ErrorMessage>
       <Input onChangeText={setUsername} />
     </FormControl>
   );

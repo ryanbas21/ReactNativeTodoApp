@@ -5,6 +5,7 @@ import { NativeModules } from 'react-native';
 import { AppContext } from '../../global-state.js';
 import { Password } from '../common/password';
 import { Username } from '../common/username';
+import { Loading } from '../utilities/loading';
 import { Footer } from './footer';
 import { Header } from './header';
 
@@ -16,11 +17,11 @@ const callbackToComponentMap = {
     <Username setUsername={setter} label={label} key={label} />
   ),
   PasswordCallback: ({ label, setter }) => (
-    <Password setPass={setter} label={label} key={label} />
+    <Password setter={setter} label={label} key={label} />
   ),
 };
 
-function LoginContainer({ step, callbacks, error, setLoading }) {
+function LoginContainer({ step, callbacks, error, setLoading, loading }) {
   const [username, setUsername] = useState('');
   const [pass, setPass] = useState('');
   const [err, setErr] = useState(error);
@@ -55,12 +56,16 @@ function LoginContainer({ step, callbacks, error, setLoading }) {
     }
   }, [isAuthenticated]);
 
+  const handleFailure = (error) => {
+    setErr('Invalid username or password');
+  };
   const handleSubmit = async () => {
     /*
      * We need to mutate the callbacks map in order to send the updated values through the next step
      * in the journey
      */
     setLoading(true);
+
     const newCallbacks = callbacks.map(({ type, response }) => {
       response.input[0].value = getValueByType[type];
       return response;
@@ -75,17 +80,23 @@ function LoginContainer({ step, callbacks, error, setLoading }) {
        * added to the form
        */
       const response = await ForgeRockModule.next(request);
+
       if (response.type === 'LoginSuccess') {
         setAuthentication(true);
         setLoading(false);
       }
     } catch (error) {
+      if (error && error.message) {
+        handleFailure(error);
+      }
       setAuthentication(false);
       setLoading(false);
     }
   };
 
-  return (
+  return loading ? (
+    <Loading message={'Checking your session'} />
+  ) : (
     <Box safeArea flex={1} p={2} w="90%" mx="auto">
       <Header />
       <FormControl isInvalid={Boolean(err)}>

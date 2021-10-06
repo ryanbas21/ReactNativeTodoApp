@@ -1,14 +1,21 @@
 import React from 'react';
 import { FormControl, Input } from 'native-base';
+import { handleFailedPolicies } from '../utilities/failedPolicies';
 
-const TextField = ({ label, setter }) => (
-  <>
-    <FormControl.Label
-      _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
-      {label}
-    </FormControl.Label>
-    <Input type="text" onChangeText={setter} />
-  </>
-);
+const TextField = ({ label, setter, output }) => {
+  const error = handleFailedPolicies(output);
+  console.log(output);
+  console.log('text error email', error);
+  return (
+    <FormControl isInvalid={error}>
+      <FormControl.Label
+        _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
+        {label}
+      </FormControl.Label>
+      <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>
+      <Input type="text" onChangeText={setter} />
+    </FormControl>
+  );
+};
 
 export { TextField };

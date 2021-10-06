@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import { Spinner, VStack, Heading } from 'native-base';
+import { Spinner, Center, Heading } from 'native-base';
 
 /**
  * @function Loading - Used to display a loading message
@@ -19,12 +19,12 @@ import { Spinner, VStack, Heading } from 'native-base';
  */
 function Loading({ message }) {
   return (
-    <VStack space={4} alignItems="center" justifyContent={'center'}>
+    <Center space={4} alignItems="center" justifyContent={'center'}>
       <Spinner size="lg" />
       <Heading textAlign="center" mb="10">
         {message}
       </Heading>
-    </VStack>
+    </Center>
   );
 }
 

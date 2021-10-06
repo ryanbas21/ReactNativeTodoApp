@@ -25,11 +25,11 @@ function TodoInput({ dispatch }) {
       <Input
         onChangeText={onChangeText}
         value={text}
-        placeholder="Add a Todo"
+        placeholder="What needs doing"
         m={2}
       />
       <Button m={2} onPress={addTodo}>
-        Add Todo
+        Create
       </Button>
     </HStack>
   );

@@ -5,7 +5,7 @@ export const EditModal = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [text, onChange] = useState('');
   return (
-    <>
+    <React.Fragment>
       <Text onPress={() => setShowModal(true)}>Edit</Text>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <Modal.Content maxWidth="400px">
@@ -36,6 +36,6 @@ export const EditModal = (props) => {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-    </>
+    </React.Fragment>
   );
 };
