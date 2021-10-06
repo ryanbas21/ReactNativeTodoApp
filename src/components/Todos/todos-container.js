@@ -20,19 +20,19 @@ function TodoContainer() {
   };
 
   const handleDelete = async (todo) => {
-    await request('DELETE', todo._id, todo);
     dispatch({
       type: 'delete-todo',
       payload: { completed: !todo.completed, _id: todo._id },
     });
+    await request('DELETE', todo._id, todo);
   };
 
   const handleStatusChange = async ({ _id, completed }) => {
-    const todo = await request('POST', `${_id}`, { completed: !completed });
     dispatch({
       type: 'complete-todo',
-      payload: todo,
+      payload: { _id, completed: !completed },
     });
+    await request('POST', `${_id}`, { completed: !completed });
   };
 
   return fetching ? (

@@ -15,67 +15,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Loading } from '../utilities/loading';
 import { useToggle } from '../../hooks/useToggle';
 import { AppContext } from '../../global-state.js';
-import { Username } from '../common/username';
-import { Password } from '../common/password';
-import { KBA } from './kba';
-import { TextField } from './text-field';
-import { Specials } from './specials';
 import { registrationTypeFactory } from './typeFactory.js';
+import { callbackTypeToComponent } from '../utilities/callbackMap';
 
 const { ForgeRockModule } = NativeModules;
-
-const callbackTypeToComponent = {
-  ValidatedCreateUsernameCallback: ({ label, setter, output }) => (
-    <Username label={label} setUsername={setter} key={label} output={output} />
-  ),
-  StringAttributeInputCallback: ({ label, setter, val, output }) => (
-    <TextField
-      label={label}
-      setter={setter}
-      key={label}
-      val={val}
-      output={output}
-    />
-  ),
-  BooleanAttributeInputCallback: ({ label, setter, val, output }) => (
-    <Specials
-      label={label}
-      setter={setter}
-      val={val}
-      key={label}
-      output={output}
-    />
-  ),
-  ValidatedCreatePasswordCallback: ({ label, setter, val, output }) => (
-    <Password
-      label={label}
-      setter={setter}
-      val={val}
-      key={label}
-      output={output}
-    />
-  ),
-  TermsAndConditionsCallback: ({ label, setter, val, terms, output }) => (
-    <Specials
-      label={label}
-      setter={setter}
-      val={val}
-      terms={terms}
-      key={label}
-      output={output}
-    />
-  ),
-  KbaCreateCallback: ({ label, setter, val, questions, output }) => (
-    <KBA
-      label={label}
-      setter={setter}
-      val={val}
-      questions={questions}
-      key={label}
-      output={output}
-    />
-  ),
-};
 
 function RegisterContainer({ setData, data, navigation, setLoading, loading }) {
   const [username, setUsername] = useState('');
@@ -118,17 +61,7 @@ function RegisterContainer({ setData, data, navigation, setLoading, loading }) {
 
   const handleRegistrationSubmit = async () => {
     setLoading(true);
-    console.log({
-      username,
-      password,
-      first,
-      last,
-      email,
-      specials,
-      updates,
-      securityQuestion,
-      terms,
-    });
+
     const callbacks = data.callbacks.map(
       ({ prompt: label, response: { input, ...all } }) => {
         if (label === 'Select a security question') {
@@ -142,6 +75,7 @@ function RegisterContainer({ setData, data, navigation, setLoading, loading }) {
         return { ...all, input };
       },
     );
+
     const request = {
       callbacks,
       authId: data.authId,
@@ -149,20 +83,19 @@ function RegisterContainer({ setData, data, navigation, setLoading, loading }) {
       header: data.pageHeader,
       description: data.pageDescription,
     };
+
     const response = await ForgeRockModule.next(JSON.stringify(request));
 
+    setData(response);
     if (response.type === 'LoginSuccess') {
-      setData(response);
       setAuthentication(true);
-      setLoading(false);
       navigation.navigate('Home');
     } else {
-      setData(response);
       setAuthentication(false);
       setLoading(false);
     }
   };
-  console.log(data);
+
   return loading ? (
     <Loading message={'Checking your session'} />
   ) : (
