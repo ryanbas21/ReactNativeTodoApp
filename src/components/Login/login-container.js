@@ -25,7 +25,7 @@ function LoginContainer({ step, callbacks, error, setLoading, loading }) {
   const [username, setUsername] = useState('');
   const [pass, setPass] = useState('');
   const [err, setErr] = useState(error);
-  const [{ isAuthenticated }, { setAuthentication }] = useContext(AppContext);
+  const [, { setAuthentication }] = useContext(AppContext);
 
   const setStateByType = {
     PasswordCallback: setPass,
@@ -37,28 +37,10 @@ function LoginContainer({ step, callbacks, error, setLoading, loading }) {
     NameCallback: username,
   };
 
-  useEffect(() => {
-    const loginSuccess = async () => {
-      /*
-       * When we get a 'LoginSuccess' message we want to complete the oauth/OIDC flow by getting
-       * an access token. After getting a successful access
-       * token we have completed the journey
-       */
-      try {
-        const token = await ForgeRockModule.getAccessToken();
-        if (token !== undefined) setAuthentication(true);
-      } catch (err) {
-        setErr('Error authenticating user, no access token');
-      }
-    };
-    if (isAuthenticated) {
-      loginSuccess();
-    }
-  }, [isAuthenticated]);
-
-  const handleFailure = (error) => {
+  const handleFailure = () => {
     setErr('Invalid username or password');
   };
+
   const handleSubmit = async () => {
     /*
      * We need to mutate the callbacks map in order to send the updated values through the next step
@@ -81,13 +63,22 @@ function LoginContainer({ step, callbacks, error, setLoading, loading }) {
        */
       const response = await ForgeRockModule.next(request);
 
+      /*
+       * If we have the LoginSuccess case, the IOS SDK has already gone through the token flow
+       */
       if (response.type === 'LoginSuccess') {
         setAuthentication(true);
+        setLoading(false);
+      } else {
+        handleFailure('Error submitting form');
+        setAuthentication(false);
         setLoading(false);
       }
     } catch (error) {
       if (error && error.message) {
         handleFailure(error);
+      } else {
+        handleFailure('Error submitting form');
       }
       setAuthentication(false);
       setLoading(false);

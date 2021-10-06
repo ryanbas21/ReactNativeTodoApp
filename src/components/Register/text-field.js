@@ -4,8 +4,6 @@ import { handleFailedPolicies } from '../utilities/failedPolicies';
 
 const TextField = ({ label, setter, output }) => {
   const error = handleFailedPolicies(output);
-  console.log(output);
-  console.log('text error email', error);
   return (
     <FormControl isInvalid={error}>
       <FormControl.Label
