@@ -12,6 +12,7 @@ import {
 import { Link } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { Header } from './header';
 import { Loading } from '../utilities/loading';
 import { useToggle } from '../../hooks/useToggle';
 import { AppContext } from '../../global-state.js';
@@ -99,22 +100,9 @@ function RegisterContainer({ setData, data, navigation, setLoading, loading }) {
   return loading ? (
     <Loading message={'Checking your session'} />
   ) : (
-    <Box safeArea flex={1} p={2} w="90%" mx="auto">
-      <Center marginBottom={4}>
-        <Icon name="account-plus" size={72} color={'#c0c9d5'} />
-        <Heading size="lg">Sign Up</Heading>
-        <Heading size="sm">
-          Already have an account? Sign in
-          <Link to={{ screen: 'Login' }}>
-            <Text color={'#0066CC'} fontWeight={'semibold'}>
-              {' '}
-              Here
-            </Text>
-          </Link>
-        </Heading>
-      </Center>
-
-      <ScrollView>
+    <ScrollView>
+      <Box safeArea flex={1} p={2} w="90%" mx="auto">
+        <Header />
         <FormControl>
           {data?.callbacks.map(
             ({
@@ -146,12 +134,10 @@ function RegisterContainer({ setData, data, navigation, setLoading, loading }) {
                     val: getValueByType(label),
                   }),
           ) ?? null}
-          <Button margin={2} onPress={handleRegistrationSubmit}>
-            Register
-          </Button>
+          <Button onPress={handleRegistrationSubmit}>Register</Button>
         </FormControl>
-      </ScrollView>
-    </Box>
+      </Box>
+    </ScrollView>
   );
 }
 

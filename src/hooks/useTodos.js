@@ -37,6 +37,7 @@ export function useTodos(dispatch, setFetched, todos) {
         setFetched(false);
         dispatch({ type: 'init-todos', payload: response });
       } catch (err) {
+        console.error('Fetch failure!!!!');
         console.error(err);
       }
     }

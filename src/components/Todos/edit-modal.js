@@ -6,7 +6,9 @@ export const EditModal = (props) => {
   const [text, onChange] = useState('');
   return (
     <React.Fragment>
-      <Text onPress={() => setShowModal(true)}>Edit</Text>
+      <Text onPress={() => setShowModal(true)} fontSize="sm">
+        Edit
+      </Text>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <Modal.Content maxWidth="400px">
           <Modal.CloseButton />

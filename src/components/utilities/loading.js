@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import { Spinner, Center, Heading } from 'native-base';
+import { Box, Spinner, Center, Heading, ScrollView } from 'native-base';
 
 /**
  * @function Loading - Used to display a loading message
@@ -19,12 +19,16 @@ import { Spinner, Center, Heading } from 'native-base';
  */
 function Loading({ message }) {
   return (
-    <Center space={4} alignItems="center" justifyContent={'center'}>
-      <Spinner size="lg" />
-      <Heading textAlign="center" mb="10">
-        {message}
-      </Heading>
-    </Center>
+    <ScrollView>
+      <Box safeArea flex={1} p={2} w="90%" mx="auto">
+        <Center space={4} alignItems="center" justifyContent={'center'}>
+          <Spinner size="lg" />
+          <Heading textAlign="center" mt="10" size="lg">
+            {message}
+          </Heading>
+        </Center>
+      </Box>
+    </ScrollView>
   );
 }
 

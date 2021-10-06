@@ -23,27 +23,42 @@ function Logout() {
   return <Loading />;
 }
 
-const LoginRoutes = () => (
-  <Tab.Navigator initialRoute="Login">
+const UnauthenticatedRoutes = () => (
+  <Tab.Navigator initialRoute="Home">
     <Tab.Screen
-      name="Login"
-      component={Login}
+      name="Home"
+      component={Home}
       options={{
-        tabBarLabel: 'Login',
+        tabBarLabel: 'Home',
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
         tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons
-            name="login-variant"
-            color={color}
-            size={size}
-          />
+          <MaterialCommunityIcons name="home" color={color} size={size} />
         ),
       }}
     />
     <Tab.Screen
-      name="Register"
+      name="Sign In"
+      component={Login}
+      options={{
+        tabBarLabel: 'Sign In',
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="key" color={color} size={size} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Sign Up"
       component={Register}
       options={{
-        tabBarLabel: 'Register',
+        tabBarLabel: 'Sign Up',
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
         tabBarIcon: ({ color, size }) => (
           <MaterialCommunityIcons
             name="account-plus"
@@ -56,13 +71,16 @@ const LoginRoutes = () => (
   </Tab.Navigator>
 );
 
-const TodoRoutes = () => (
+const AuthenticatedRoutes = () => (
   <Tab.Navigator initialRoute="Home">
     <Tab.Screen
       name="Home"
       component={Home}
       options={{
         tabBarLabel: 'Home',
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
         tabBarIcon: ({ color, size }) => (
           <MaterialCommunityIcons name="home" color={color} size={size} />
         ),
@@ -73,30 +91,31 @@ const TodoRoutes = () => (
       component={Todos}
       options={{
         tabBarLabel: 'Todos',
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
         tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons
-            name="format-list-checks"
-            color={color}
-            size={size}
-          />
+          <MaterialCommunityIcons name="check-all" color={color} size={size} />
         ),
       }}
     />
     <Tab.Screen
-      name="Logout"
+      name="Sign Out"
       component={Logout}
       options={{
-        tabBarLabel: 'Logout',
+        tabBarLabel: 'Sign Out',
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
         tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons
-            name="logout-variant"
-            color={color}
-            size={size}
-          />
+          <MaterialCommunityIcons name="logout" color={color} size={size} />
         ),
       }}
     />
   </Tab.Navigator>
 );
 
-export { TodoRoutes, LoginRoutes };
+export {
+  AuthenticatedRoutes as TodoRoutes,
+  UnauthenticatedRoutes as LoginRoutes,
+};
