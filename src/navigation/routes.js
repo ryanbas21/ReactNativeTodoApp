@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+import { NativeModules } from 'react-native';
 import { Home, Login, Todos, Register } from '../screens';
 import { AppContext } from '../global-state';
 import { Loading } from '../components/utilities/loading';
@@ -7,6 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
+const { ForgeRockModule } = NativeModules;
 
 function Logout() {
   const [{}, { setAuthentication }] = useContext(AppContext);

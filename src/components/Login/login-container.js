@@ -5,6 +5,7 @@ import { NativeModules } from 'react-native';
 import { AppContext } from '../../global-state.js';
 import { Password } from '../common/password';
 import { Username } from '../common/username';
+import { Loading } from '../utilities/loading';
 import { Footer } from './footer';
 import { Header } from './header';
 
@@ -16,11 +17,11 @@ const callbackToComponentMap = {
     <Username setUsername={setter} label={label} key={label} />
   ),
   PasswordCallback: ({ label, setter }) => (
-    <Password setPass={setter} label={label} key={label} />
+    <Password setter={setter} label={label} key={label} />
   ),
 };
 
-function LoginContainer({ step, callbacks, error, setLoading }) {
+function LoginContainer({ step, callbacks, error, setLoading, loading }) {
   const [username, setUsername] = useState('');
   const [pass, setPass] = useState('');
   const [err, setErr] = useState(error);
@@ -64,6 +65,7 @@ function LoginContainer({ step, callbacks, error, setLoading }) {
      * in the journey
      */
     setLoading(true);
+
     const newCallbacks = callbacks.map(({ type, response }) => {
       response.input[0].value = getValueByType[type];
       return response;
@@ -92,7 +94,9 @@ function LoginContainer({ step, callbacks, error, setLoading }) {
     }
   };
 
-  return (
+  return loading ? (
+    <Loading message={'Checking your session'} />
+  ) : (
     <Box safeArea flex={1} p={2} w="90%" mx="auto">
       <Header />
       <FormControl isInvalid={Boolean(err)}>

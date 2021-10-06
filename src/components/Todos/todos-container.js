@@ -18,6 +18,7 @@ function TodoContainer() {
     dispatch({ type: 'edit-todo', payload: { _id, title } });
     await request('POST', `${_id}`, { title });
   };
+
   const handleDelete = async (todo) => {
     await request('DELETE', todo._id, todo);
     dispatch({
