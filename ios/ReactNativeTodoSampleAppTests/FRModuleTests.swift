@@ -23,10 +23,11 @@ class FRModuleTests: XCTestCase {
   let exampleKBAResponse = "{\"authId\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoSW5kZXhWYWx1ZSI6IlNpbXBsZUxvZ2luIiwib3RrIjoicXNobWJxZ2FsYzdvaDAzdjhqZzViYjkyNXUiLCJhdXRoSW5kZXhUeXBlIjoic2VydmljZSIsInJlYWxtIjoiL2FscGhhIiwic2Vzc2lvbklkIjoiKkFBSlRTUUFDTURJQUJIUjVjR1VBQ0VwWFZGOUJWVlJJQUFKVE1RQUNNREUuKmV5SjBlWEFpT2lKS1YxUWlMQ0pqZEhraU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuWlhsS01HVllRV2xQYVVwTFZqRlJhVXhEU214aWJVMXBUMmxLUWsxVVNUUlJNRXBFVEZWb1ZFMXFWVEpKYVhkcFdWZDRia2xxYjJsYVIyeDVTVzR3TGk1eGVtRnliMUpUWDNVNFRGcFdYM2hpWDBGNU9ERm5MbHBCVUZkdU9IaFlaMncwZUhWWVkzVkxTekZaUVVwblVVMXZUamRpV0U0MGJWTkhOelJsY1hkRlpFaHVZMDVVV0hKT1VtZHVZa0pVTlZKeWIzbHlibVIzUVZRMWJXWTNRMXBVY25CaU1GcGhaSFo2Y1hCT01HNDVSbXRMUjFGeVVtZEtjRXBzT1ZBdGQxQmtXVzlOYjFSdk1rNXNiRGxFTFcxdVltVkpTMmt3Vmt0c09IQTNUVkJ5UTI5UVNuQnZjRnBWTmxSQ2NUQkhiMjQxTXpSb1dYaHZOMFpQWVdwcVRsbzJSMjEwVjJ0b1lsOW9TWGhwZHpGYWEzTkdVMjl3Um5nMlQyeEJNV1UwYjFkMGF6azJZbFI2TlRCTVJWOVhXWHB0YzFwWGVVc3RablpIWm01MFFtWlBWMk55WHpGNldqZzFNbE16VkVOZlpXSjBWRlp5YzNkNlZpMXJUVEZ6UmpaNGJqRmxMWFJ5TmxkS2VUbFpUemR3UWxwMFZqWjRZVjk1YkRsUlNVMUJkRFpWYWt4SFowRlVkM013WTI4d2JEVmZZWGR3YlRWRE1YTTJUblpuYm10SGJtTTFSRGxFU0VoeVp6WkhUMVZFU2pGU1p6ZE1TRlZ6VDIxclJXZFlYMHB6Ums1Qk0xZDFVMlpDZVZvMlVUaDZPVk0yV1ZCSGJVWkRURUYzWTBkRGQwNWlaRlpLVTNBMU0yUlFVVEo0WDFaRkxYYzJRemxXV1VZd2JYQnhUbmwyTW1oT1pFb3lSMXBVVlUxTWVFTjNMWGRJU3pWQ1F6UjBUa3RDYTB0WU5FNDBTMUpOTkRsaVRGRnlkMkZEUW1aZmJYbGlSV2t6YzJkNFJHOXZTRXhxU0hWRU9UUTVjbEo1ZG1aaVVISXRTVVYxVmtRM1EwTkpkV2x2ZFVGbWQxSklWSHBHWjB0eGRYRm1NVWR0UmxoUVRHVmZiREphVTBFdGFTMVVjMHRqUTBscmNDMDNNRTFHZDI1V1MyRXpMV3RFVm1OaFRFSnVlSGhOYjBaaWEyWlhUR1pVY0dkcE5teDZSR3hsYmxNeWNIWnlPRVk0UjBaR1prVldVRzVIU0Zoc2VqZE5OazFGTkU5SlZ6VTBlVVo1UjFNNU5WUlZOMFo1UmtKTExXZEVOMjh5TFZFeFJqZDVVakpCZFc0eldIRjJha2xTTldKS2VHZFFiSFl4YzFkSGVHNVdZMkpwVVRJelpHSk5UMWRHZEc5a1JsQmpTbkJuUkY4NU5sZGFlSFZIV0RGWFJIVjJOV0ZmU1hkYVYxWlNZVVUxUXpsNU9YTmZYMUJ4ZUdwRFozaEZXRXBmVHpsUlRtUlRiRFJaWWtKSmRqWndha1pJY21WQ09ITlpjRzB3ZFVSeU5IZEpRMVpIUkRSS01WOVhibGxPT1Y5bmRGUnVWWEV3ZGxCV1ZubEdNVWhUVFVab1IwVkhSSFpXVlZCeVpYZFFVbFpDU1ZVdE1sa3lXa0YwVDBNdFVWVnVVbDloZWxKNWJqVkJMbGh6WVVvd01VSXdaSGh0WDBOWlVVSmpkMW93U0ZFLnM4UHJwelBYaXpFZV9xWDMwV1NUdFFnUHNKUEtaSnN6ZUxZZkJVN3RZNzQiLCJleHAiOjE2MzEwMTExMzEsImlhdCI6MTYzMTAxMDgzMX0.ZG3beMR-VI2fwHCzCdggG8IOyRTKVJaW2pB8mB5wtv8\",\"callbacks\":[{\"type\":\"KbaCreateCallback\",\"output\":[{\"name\":\"prompt\",\"value\":\"Security Questions\"},{\"name\":\"predefinedQuestions\",\"value\":[\"What's your favorite color?\",\"Who was your first employer?\"]}],\"input\":[{\"name\":\"IDToken1question\",\"value\":\"What's your favorite color?\"},{\"name\":\"IDToken1answer\",\"value\":\"Blue\"}]},{\"type\":\"KbaCreateCallback\",\"output\":[{\"name\":\"prompt\",\"value\":\"Security Questions\"},{\"name\":\"predefinedQuestions\",\"value\":[\"What's your favorite color?\",\"Who was your first employer?\"]}],\"input\":[{\"name\":\"IDToken2question\",\"value\":\"Who was your first employer?\"},{\"name\":\"IDToken2answer\",\"value\":\"Me\"}]}],\"status\":200,\"ok\":true}"
   
   func testFRStart() {
-    
-    forgerockModule.frAuthStart()
-    XCTAssertTrue(true)
-  
+    forgerockModule.frAuthStart { _ in
+      XCTAssertTrue(true)
+    } rejecter: { code, message, error in
+      XCTAssertTrue(false)
+    }
   }
   
   func testDecodingRegister() {
@@ -109,61 +110,18 @@ class FRModuleTests: XCTestCase {
   }
   
   func testloginWithoutUI() {
-    forgerockModule.frAuthStart()
     let expectation = XCTestExpectation(description: "testloginWithoutUI")
-    sleep(2)
-    forgerockModule.loginWithoutUI { result in
-      if let result = result as? String, let dict = result.convertToDictionary() {
-        XCTAssertNotNil(dict["authId"])
-        XCTAssertNotNil(dict["authServiceId"])
-        XCTAssertNotNil(dict["callbacks"])
-      } else {
-        assertionFailure()
-      }
-      expectation.fulfill()
-    } rejecter: { code, message, error in
-      assertionFailure()
-      expectation.fulfill()
-    }
-    
-    wait(for: [expectation], timeout: 30.0)
-  }
-  
-  func testFullLogin() {
-    forgerockModule.frAuthStart()
-    let expectation = XCTestExpectation(description: "testloginWithoutUI")
-    sleep(2)
-    forgerockModule.performUserLogout()
-    sleep(2)
-    forgerockModule.loginWithoutUI { result in
-      if let result = result as? String, let dict = result.convertToDictionary() {
-        XCTAssertNotNil(dict["authId"])
-        XCTAssertNotNil(dict["authServiceId"])
-        XCTAssertNotNil(dict["callbacks"])
-        
-        self.forgerockModule.next(self.exampleLoginResponse) { result in
-          if let response = result as? [String: Any] {
-            XCTAssertNotNil(response["sessionToken"])
-            XCTAssertNotNil(response["type"])
-            XCTAssertEqual(response["type"] as! String, "LoginSuccess")
-            
-            self.forgerockModule.getAccessToken { accessToken in
-              expectation.fulfill()
-            } rejecter: { code, message, error in
-              expectation.fulfill()
-            }
-
-          } else if let result = result as? String, let dict = result.convertToDictionary() {
-            XCTAssertNotNil(dict["authId"])
-            XCTAssertNotNil(dict["authServiceId"])
-            XCTAssertNotNil(dict["callbacks"])
-          }
-        } rejecter: { code, message, error in
+    self.forgerockModule.frAuthStart { _ in
+      self.forgerockModule.loginWithoutUI { result in
+        if let result = result as? String, let dict = result.convertToDictionary() {
+          XCTAssertNotNil(dict["authId"])
+          XCTAssertNotNil(dict["authServiceId"])
+          XCTAssertNotNil(dict["callbacks"])
+        } else {
           assertionFailure()
-          expectation.fulfill()
         }
-
-      } else {
+        expectation.fulfill()
+      } rejecter: { code, message, error in
         assertionFailure()
         expectation.fulfill()
       }
@@ -171,36 +129,90 @@ class FRModuleTests: XCTestCase {
       assertionFailure()
       expectation.fulfill()
     }
-    
+
+    wait(for: [expectation], timeout: 30.0)
+  }
+  
+  func testFullLogin() {
+    let expectation = XCTestExpectation(description: "testloginWithoutUI")
+    forgerockModule.frAuthStart { _ in
+      self.forgerockModule.performUserLogout()
+      sleep(2)
+      self.forgerockModule.loginWithoutUI { result in
+        if let result = result as? String, let dict = result.convertToDictionary() {
+          XCTAssertNotNil(dict["authId"])
+          XCTAssertNotNil(dict["authServiceId"])
+          XCTAssertNotNil(dict["callbacks"])
+          
+          self.forgerockModule.next(self.exampleLoginResponse) { result in
+            if let response = result as? [String: Any] {
+              XCTAssertNotNil(response["sessionToken"])
+              XCTAssertNotNil(response["type"])
+              XCTAssertEqual(response["type"] as! String, "LoginSuccess")
+              
+              self.forgerockModule.getAccessToken { accessToken in
+                expectation.fulfill()
+              } rejecter: { code, message, error in
+                expectation.fulfill()
+              }
+
+            } else if let result = result as? String, let dict = result.convertToDictionary() {
+              XCTAssertNotNil(dict["authId"])
+              XCTAssertNotNil(dict["authServiceId"])
+              XCTAssertNotNil(dict["callbacks"])
+            }
+          } rejecter: { code, message, error in
+            assertionFailure()
+            expectation.fulfill()
+          }
+
+        } else {
+          assertionFailure()
+          expectation.fulfill()
+        }
+      } rejecter: { code, message, error in
+        assertionFailure()
+        expectation.fulfill()
+      }
+    } rejecter: { code, message, error in
+      assertionFailure()
+      expectation.fulfill()
+    }
+
     wait(for: [expectation], timeout: 30.0)
   }
   
   func testRegister() {
-    self.forgerockModule.frAuthStart()
+    
+
     let expectation = XCTestExpectation(description: "testRegisterWithoutUI")
-    sleep(2)
-    self.forgerockModule.performUserLogout()
-    sleep(2)
-    self.forgerockModule.registerWithoutUI { result in
-      if let result = result as? String, let dict = result.convertToDictionary() {
-        XCTAssertNotNil(dict["authId"])
-        XCTAssertNotNil(dict["authServiceId"])
-        XCTAssertNotNil(dict["callbacks"])
-        self.forgerockModule.next(self.exampleRegisterResponse) { result in
-          if let response = result as? [String: Any] {
-            XCTAssertNotNil(response["sessionToken"])
-            XCTAssertNotNil(response["type"])
-            XCTAssertEqual(response["type"] as! String, "LoginSuccess")
-            expectation.fulfill()
-          } else {
+    self.forgerockModule.frAuthStart { _ in
+      self.forgerockModule.performUserLogout()
+      sleep(2)
+      self.forgerockModule.registerWithoutUI { result in
+        if let result = result as? String, let dict = result.convertToDictionary() {
+          XCTAssertNotNil(dict["authId"])
+          XCTAssertNotNil(dict["authServiceId"])
+          XCTAssertNotNil(dict["callbacks"])
+          self.forgerockModule.next(self.exampleRegisterResponse) { result in
+            if let response = result as? [String: Any] {
+              XCTAssertNotNil(response["sessionToken"])
+              XCTAssertNotNil(response["type"])
+              XCTAssertEqual(response["type"] as! String, "LoginSuccess")
+              expectation.fulfill()
+            } else {
+              assertionFailure()
+              expectation.fulfill()
+            }
+          } rejecter: { code, message, error in
             assertionFailure()
             expectation.fulfill()
           }
-        } rejecter: { code, message, error in
+        } else {
           assertionFailure()
           expectation.fulfill()
         }
-      } else {
+      } rejecter: { code, message, error in
         assertionFailure()
         expectation.fulfill()
       }
@@ -214,46 +226,49 @@ class FRModuleTests: XCTestCase {
   }
   
   func testKBALogin() {
-    self.forgerockModule.frAuthStart()
     let expectation = XCTestExpectation(description: "testloginWithoutUI")
-    sleep(2)
-    self.forgerockModule.performUserLogout()
-    sleep(2)
-    self.forgerockModule.loginWithoutUI { result in
-      if let result = result as? String, let dict = result.convertToDictionary() {
-        XCTAssertNotNil(dict["authId"])
-        XCTAssertNotNil(dict["authServiceId"])
-        XCTAssertNotNil(dict["callbacks"])
-        
-        self.forgerockModule.next(self.exampleLoginResponse) { result in
-          if let response = result as? [String: Any] {
-            XCTAssertNotNil(response["sessionToken"])
-            XCTAssertNotNil(response["type"])
-            XCTAssertEqual(response["type"] as! String, "LoginSuccess")
-          } else if let result = result as? String, let dict = result.convertToDictionary() {
-            XCTAssertNotNil(dict["authId"])
-            XCTAssertNotNil(dict["authServiceId"])
-            XCTAssertNotNil(dict["callbacks"])
-            self.forgerockModule.next(self.exampleKBAResponse) { result in
-              if let response = result as? [String: Any] {
-                XCTAssertNotNil(response["sessionToken"])
-                XCTAssertNotNil(response["type"])
-                XCTAssertEqual(response["type"] as! String, "LoginSuccess")
-              } else {
+    self.forgerockModule.frAuthStart { _ in
+      self.forgerockModule.performUserLogout()
+      sleep(2)
+      self.forgerockModule.loginWithoutUI { result in
+        if let result = result as? String, let dict = result.convertToDictionary() {
+          XCTAssertNotNil(dict["authId"])
+          XCTAssertNotNil(dict["authServiceId"])
+          XCTAssertNotNil(dict["callbacks"])
+          
+          self.forgerockModule.next(self.exampleLoginResponse) { result in
+            if let response = result as? [String: Any] {
+              XCTAssertNotNil(response["sessionToken"])
+              XCTAssertNotNil(response["type"])
+              XCTAssertEqual(response["type"] as! String, "LoginSuccess")
+            } else if let result = result as? String, let dict = result.convertToDictionary() {
+              XCTAssertNotNil(dict["authId"])
+              XCTAssertNotNil(dict["authServiceId"])
+              XCTAssertNotNil(dict["callbacks"])
+              self.forgerockModule.next(self.exampleKBAResponse) { result in
+                if let response = result as? [String: Any] {
+                  XCTAssertNotNil(response["sessionToken"])
+                  XCTAssertNotNil(response["type"])
+                  XCTAssertEqual(response["type"] as! String, "LoginSuccess")
+                } else {
+                  assertionFailure()
+                }
+                expectation.fulfill()
+              } rejecter: { code, message, error in
                 assertionFailure()
+                expectation.fulfill()
               }
-              expectation.fulfill()
-            } rejecter: { code, message, error in
-              assertionFailure()
-              expectation.fulfill()
             }
+          } rejecter: { code, message, error in
+            assertionFailure()
+            expectation.fulfill()
           }
-        } rejecter: { code, message, error in
+
+        } else {
           assertionFailure()
           expectation.fulfill()
         }
-
-      } else {
+      } rejecter: { code, message, error in
         assertionFailure()
         expectation.fulfill()
       }
@@ -302,24 +317,26 @@ class FRModuleTests: XCTestCase {
   
   // MARK: Helper Methods
   private func authenticate() {
-    forgerockModule.frAuthStart()
-    sleep(2)
-    forgerockModule.performUserLogout()
-    sleep(2)
-    let semaphore = DispatchSemaphore(value: 1)
-    semaphore.wait()
-    forgerockModule.loginWithoutUI { result in
-      if let _ = result as? String {
-        self.forgerockModule.next(self.exampleLoginResponse) { result in
-          semaphore.signal()
-        } rejecter: { code, message, error in
+    self.forgerockModule.frAuthStart { _ in
+      self.forgerockModule.performUserLogout()
+      sleep(2)
+      let semaphore = DispatchSemaphore(value: 1)
+      semaphore.wait()
+      self.forgerockModule.loginWithoutUI { result in
+        if let _ = result as? String {
+          self.forgerockModule.next(self.exampleLoginResponse) { result in
+            semaphore.signal()
+          } rejecter: { code, message, error in
+            semaphore.signal()
+          }
+        } else {
           semaphore.signal()
         }
-      } else {
+      } rejecter: { code, message, error in
         semaphore.signal()
       }
     } rejecter: { code, message, error in
-      semaphore.signal()
+      print(message)
     }
   }
 }

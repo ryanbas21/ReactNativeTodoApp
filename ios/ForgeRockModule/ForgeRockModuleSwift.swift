@@ -21,15 +21,18 @@ public class ForgeRockModuleSwift: NSObject {
     return false
   }
   
-  @objc func frAuthStart() {
+  @objc func frAuthStart(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     // Set log level according to your needs
     FRLog.setLogLevel([.all])
     
     do {
       try FRAuth.start()
+      sleep(1)
+      resolve("SDK Initialized")
     }
     catch {
       FRLog.e(error.localizedDescription)
+      reject("Error", "SDK Failed to initialize", error)
     }
   }
   
