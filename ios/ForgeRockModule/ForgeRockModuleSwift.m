@@ -14,7 +14,7 @@
 @interface RCT_EXTERN_REMAP_MODULE(ForgeRockModule, ForgeRockModuleSwift, NSObject)
 
 //Used in the ReactNative Sample
-RCT_EXTERN_METHOD(frAuthStart)
+RCT_EXTERN_METHOD(frAuthStart: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(loginWithoutUI: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(registerWithoutUI: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(next: (NSString *)response resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
