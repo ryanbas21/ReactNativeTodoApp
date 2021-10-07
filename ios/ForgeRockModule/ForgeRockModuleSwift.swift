@@ -241,7 +241,7 @@ public class ForgeRockModuleSwift: NSObject {
           FRLog.i(string ?? "Encoding of Token failed")
           resolve(string)
         } catch {
-          reject("Error", "Serializing Node failed", nil)
+          reject("Error", "Serializing Node failed", error)
         }
       }
       else {
@@ -261,7 +261,7 @@ public class ForgeRockModuleSwift: NSObject {
         let string = String(data: data, encoding: .utf8)
         resolve(string)
       } catch {
-        reject("Error", "Serializing Node failed", nil)
+        reject("Error", "Serializing Node failed", error)
       }
     } else {
       reject("Error", "No node present", nil)
@@ -301,6 +301,8 @@ public struct FRCallback: Encodable {
   var choices: [String]?
   var predefinedQuestions: [String]?
   var inputNames: [String]?
+  var policies: RawPolicies?
+  var failedPolicies: [RawFailedPolicies]?
   
   /// Raw JSON response of Callback
   var response: String
@@ -324,6 +326,41 @@ public struct FRCallback: Encodable {
       self.inputNames = [thisCallback.inputName!]
     }
     
+    if let thisCallback = callback as? AbstractValidatedCallback {
+      if let policyDictionary = thisCallback.policies, let policiesJSON = try? policyDictionary.toJson() {
+        let jsonData = Data(policiesJSON.utf8)
+        do {
+          self.policies = try JSONDecoder().decode(RawPolicies.self, from: jsonData)
+        }
+        catch {
+          print(error)
+        }
+      }
+      if let failedPolicies = thisCallback.failedPolicies {
+        self.failedPolicies = []
+        for failedPolicy in failedPolicies {
+          var paramsDictionary = [String: FlexibleType]()
+          if let params = failedPolicy.params {
+            let newDictionary = params.mapValues { value -> FlexibleType in
+              if let str = value as? String {
+                return FlexibleType(str, originalType: .String)
+              } else if let str = value as? Int {
+                return FlexibleType(String(str), originalType: .Int)
+              } else if let str = value as? Double {
+                return FlexibleType(String(str), originalType: .Double)
+              } else if let str = value as? Bool {
+                return FlexibleType(String(str), originalType: .Bool)
+              } else {
+                return FlexibleType("", originalType: .String)
+              }
+            }
+            paramsDictionary = newDictionary
+          }
+          self.failedPolicies?.append(RawFailedPolicies(propertyName: self.prompt, params: paramsDictionary, policyRequirement:  failedPolicy.policyRequirement, failedDescription: failedPolicy.failedDescription()))
+        }
+      }
+    }
+    
     if let jsonData = try? JSONSerialization.data(withJSONObject: callback.response, options: .prettyPrinted), let jsonString = String(data: jsonData, encoding: .utf8) {
       self.response = jsonString
     } else {
@@ -344,27 +381,46 @@ public struct RawCallback: Codable {
   var _id: Int?
 }
 
+public struct RawPolicies: Codable {
+  var name: String?
+  var policyRequirements: [String]?
+  var policies: [Policy]?
+}
+
+public struct RawFailedPolicies: Codable {
+  var propertyName: String?
+  var params: [String: FlexibleType]?
+  var policyRequirement: String?
+  var failedDescription: String?
+}
+
+public struct Policy: Codable {
+  var policyId: String?
+  var policyRequirements: [String]?
+  var params: [String: FlexibleType]?
+}
+
 public struct RawInput: Codable {
   var name: String
   var value: FlexibleType?
+}
+
+public enum ResponseType {
+  case String
+  case Int
+  case Double
+  case Bool
+  case TypeMismatch
+  case NotSet
 }
 
 public struct FlexibleType: Codable {
   let value: Any
   let originalType: ResponseType
   
-  enum ResponseType {
-    case String
-    case Int
-    case Double
-    case Bool
-    case TypeMismatch
-    case NotSet
-  }
-  
-  init(_ value: String) {
+  init(_ value: String, originalType: ResponseType = .NotSet) {
     self.value = value
-    self.originalType = .NotSet
+    self.originalType = originalType
   }
   
   public init(from decoder: Decoder) throws {
@@ -383,8 +439,9 @@ public struct FlexibleType: Codable {
       value = bool
       originalType = .Bool
     } else {
-      originalType = .TypeMismatch
-      throw DecodingError.typeMismatch(String.self, .init(codingPath: decoder.codingPath, debugDescription: ""))
+      originalType = .String
+      value = ""
+      //throw DecodingError.typeMismatch(String.self, .init(codingPath: decoder.codingPath, debugDescription: ""))
     }
   }
   
@@ -394,14 +451,32 @@ public struct FlexibleType: Codable {
     case .String:
       try container.encode(value as! String)
     case .Int:
-      try container.encode(value as! Int)
+      let unwarpedValue = value as? Int ?? Int(value as! String)
+      try container.encode(unwarpedValue)
     case .Double:
-      try container.encode(value as! Double)
+      let unwarpedValue = value as? Double ?? Double(value as! String)
+      try container.encode(unwarpedValue)
     case .Bool:
-      try container.encode(value as! Bool)
+      let unwarpedValue = value as? Bool ?? Bool(value as! String)
+      try container.encode(unwarpedValue)
     default:
-      throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Invalid JSON value"))
+      try container.encode("")
+      //throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Invalid JSON value"))
     }
     
   }
+}
+
+extension Dictionary {
+    
+    /// Convert Dictionary to JSON string
+    /// - Throws: exception if dictionary cannot be converted to JSON data or when data cannot be converted to UTF8 string
+    /// - Returns: JSON string
+    func toJson() throws -> String {
+        let data = try JSONSerialization.data(withJSONObject: self)
+        if let string = String(data: data, encoding: .utf8) {
+            return string
+        }
+        throw NSError(domain: "Dictionary", code: 1, userInfo: ["message": "Data cannot be converted to .utf8 string"])
+    }
 }
