@@ -1,13 +1,6 @@
 # OSX
 #
 .DS_Store
-src/components/Login/Footer.js
-src/components/Register/KBA.js
-src/components/Register/Password.js
-src/components/Register/Register.js
-src/components/Register/Specials.js
-src/components/Todos/Todo.js
-src/screens/Todos.js
 .env
 todos/*
 users/*
