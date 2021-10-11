@@ -27,7 +27,7 @@ public class ForgeRockModuleSwift: NSObject {
     
     do {
       try FRAuth.start()
-      sleep(1)
+      sleep(2)
       resolve("SDK Initialized")
     }
     catch {
@@ -198,8 +198,8 @@ public class ForgeRockModuleSwift: NSObject {
     
     guard let user = FRUser.currentUser else {
       // If no currently authenticated user is found, log error
-      FRLog.e("FRDevice.currentDevice does not exist - SDK not initialized")
-      reject("error", "FRDevice.currentDevice does not exist - SDK not initialized", nil)
+      FRLog.e("Invalid SDK State: FRUser is returning 'nil'.")
+      reject("error", "Invalid SDK State: FRUser is returning 'nil'.", nil)
       return
     }
     
@@ -225,8 +225,8 @@ public class ForgeRockModuleSwift: NSObject {
     
     guard let user = FRUser.currentUser else {
       // If no currently authenticated user is found, log error
-      FRLog.e("FRDevice.currentDevice does not exist - SDK not initialized")
-      reject("error", "FRDevice.currentDevice does not exist - SDK not initialized", nil)
+      FRLog.e("Invalid SDK State: FRUser is returning 'nil'.")
+      reject("error", "Invalid SDK State: FRUser is returning 'nil'.", nil)
       return
     }
     
@@ -258,12 +258,10 @@ public class ForgeRockModuleSwift: NSObject {
     if let node = node {
       self.currentNode = node
       let frNode = FRNode(node: node)
-      let encoder = JSONEncoder()
       do {
-        let data = try encoder.encode(frNode)
-        let string = String(data: data, encoding: .utf8)
-        resolve(string)
-      } catch {
+        resolve(try frNode.resolve())
+      }
+      catch {
         reject("Error", "Serializing Node failed", error)
       }
     } else {
@@ -273,7 +271,8 @@ public class ForgeRockModuleSwift: NSObject {
 }
 
 public struct FRNode: Encodable {
-  var callbacks: [FRCallback]
+  
+  var frCallbacks: [FRCallback]
   
   var authId: String
   /// Unique UUID String value of initiated AuthService flow
@@ -284,6 +283,12 @@ public struct FRNode: Encodable {
   var pageHeader: String?
   /// Description attribute in Page Node
   var pageDescription: String?
+  //array of raw callbacks
+  var callbacks: [[String: Any]]
+  
+  private enum CodingKeys: String, CodingKey {
+      case frCallbacks, authId, authServiceId, stage, pageHeader, pageDescription
+  }
   
   init(node: Node) {
     authId = node.authId
@@ -291,10 +296,24 @@ public struct FRNode: Encodable {
     stage = node.stage
     pageHeader = node.pageHeader
     pageDescription = node.pageDescription
-    callbacks = [FRCallback]()
+    frCallbacks = [FRCallback]()
+    callbacks = [[String: Any]]()
     for callback in node.callbacks {
-      callbacks.append(FRCallback(callback: callback))
+      callbacks.append(callback.response)
+      frCallbacks.append(FRCallback(callback: callback))
     }
+  }
+  
+  //used for passing the Node object back to the ReactNative layer
+  func resolve() throws -> String  {
+    var response = [String: Any]()
+    response["authId"] = self.authId
+    response["authServiceId"] = self.authServiceId
+    response["stage"] = self.stage
+    response["description"] = self.pageDescription
+    response["header"] = self.pageHeader
+    response["callbacks"] = self.callbacks
+    return try response.toJson()
   }
 }
 
@@ -482,4 +501,15 @@ extension Dictionary {
         }
         throw NSError(domain: "Dictionary", code: 1, userInfo: ["message": "Data cannot be converted to .utf8 string"])
     }
+}
+
+extension Array {
+  
+  /// Convert Array to JSON string
+  /// - Throws: exception if Array cannot be converted to JSON data or when data cannot be converted to UTF8 string
+  /// - Returns: JSON string
+  func toJson() throws -> String {
+      let data = try JSONSerialization.data(withJSONObject: self, options: [])
+      return String(data: data, encoding: .utf8)!
+  }
 }
