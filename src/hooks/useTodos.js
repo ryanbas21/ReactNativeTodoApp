@@ -37,6 +37,8 @@ export function useTodos(dispatch, setFetched, todos) {
         setFetched(false);
         dispatch({ type: 'init-todos', payload: response });
       } catch (err) {
+        // Should we have the SDK make the api calls and decisions
+        // User has to manually catch network errors and we lose SDK value
         console.error('Fetch failure!!!!');
         console.error(err);
       }
