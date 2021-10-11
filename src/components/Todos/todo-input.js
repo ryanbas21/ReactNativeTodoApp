@@ -21,14 +21,14 @@ function TodoInput({ dispatch }) {
   };
 
   return (
-    <HStack justifyContent="center" alignItems="center">
+    <HStack flexDirection="row" justifyContent="space-between">
       <Input
+        flexGrow="1"
         onChangeText={onChangeText}
         value={text}
         placeholder="What needs doing"
-        m={2}
       />
-      <Button m={2} onPress={addTodo}>
+      <Button ml={3} onPress={addTodo}>
         Create
       </Button>
     </HStack>

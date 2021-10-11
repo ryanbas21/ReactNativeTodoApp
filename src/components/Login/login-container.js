@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, VStack, FormControl } from 'native-base';
+import { Box, VStack, FormControl, ScrollView } from 'native-base';
 import { NativeModules } from 'react-native';
 
 import { AppContext } from '../../global-state.js';
@@ -88,27 +88,29 @@ function LoginContainer({ step, callbacks, error, setLoading, loading }) {
   return loading ? (
     <Loading message={'Checking your session'} />
   ) : (
-    <Box safeArea flex={1} p={2} w="90%" mx="auto">
-      <Header />
-      <FormControl isInvalid={Boolean(err)}>
-        {err ? (
-          <FormControl.ErrorMessage>{err}</FormControl.ErrorMessage>
-        ) : null}
-        <VStack space={2} mt={5}>
-          {callbacks.length
-            ? callbacks.map(({ type, prompt: label }) =>
-                callbackToComponentMap[type]
-                  ? callbackToComponentMap[type]({
-                      label,
-                      setter: setStateByType[type],
-                    })
-                  : null,
-              )
-            : null}
-          <Footer handleSubmit={handleSubmit} />
-        </VStack>
-      </FormControl>
-    </Box>
+    <ScrollView>
+      <Box safeArea flex={1} p={2} w="90%" mx="auto">
+        <Header />
+        <FormControl isInvalid={Boolean(err)}>
+          {err ? (
+            <FormControl.ErrorMessage>{err}</FormControl.ErrorMessage>
+          ) : null}
+          <VStack space={2} mt={5}>
+            {callbacks.length
+              ? callbacks.map(({ type, prompt: label }) =>
+                  callbackToComponentMap[type]
+                    ? callbackToComponentMap[type]({
+                        label,
+                        setter: setStateByType[type],
+                      })
+                    : null,
+                )
+              : null}
+            <Footer handleSubmit={handleSubmit} />
+          </VStack>
+        </FormControl>
+      </Box>
+    </ScrollView>
   );
 }
 

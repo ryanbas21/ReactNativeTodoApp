@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
-import { VStack, Checkbox, Text, Modal } from 'native-base';
+import React, { useState, Fragment } from 'react';
+import { VStack, Checkbox, Text, Modal, useToken } from 'native-base';
 import { handleFailedPolicies } from '../utilities/failedPolicies';
 
 function TermsModal({ terms, showModal, setModal }) {
+  const [primary] = useToken('colors', ['primary.600']);
   return (
-    <React.Fragment>
-      <Text
-        onPress={() => setModal(true)}
-        color={'#0066CC'}
-        fontWeight={'semibold'}>
-        Show Terms
+    <Fragment>
+      <Text onPress={() => setModal(true)} color={primary} pl={2} fontSize="md">
+        Please accept our Terms and Conditions
       </Text>
       <Modal isOpen={showModal} onClose={() => setModal(false)}>
         <Modal.Content maxWidth="400px">
@@ -18,7 +16,7 @@ function TermsModal({ terms, showModal, setModal }) {
           <Modal.Body>{terms}</Modal.Body>
         </Modal.Content>
       </Modal>
-    </React.Fragment>
+    </Fragment>
   );
 }
 
@@ -26,8 +24,10 @@ const Specials = ({ label, val, setter, terms = null, output }) => {
   const [showModal, setShowModal] = useState(false);
   console.log(terms);
   return (
-    <VStack margin={2}>
-      <Text>{handleFailedPolicies(output)}</Text>
+    <VStack mb={3}>
+      {handleFailedPolicies(output) ? (
+        <Text>{handleFailedPolicies(output)}</Text>
+      ) : null}
       <Checkbox.Group accessibilityLabel="terms-checkbox">
         <Checkbox onChange={setter} isChecked={val} aria-label="terms">
           {terms !== null ? (

@@ -4,6 +4,7 @@ import { API_URL } from '@env';
 const { ForgeRockModule } = NativeModules;
 
 async function request(method, resource = '', body = null) {
+  console.log('API URL' + API_URL);
   const json = await ForgeRockModule.getAccessToken();
   const tokens = JSON.parse(json);
   const { tokenType, value } = tokens;

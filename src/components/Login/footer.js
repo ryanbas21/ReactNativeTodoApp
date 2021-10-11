@@ -1,26 +1,30 @@
 import React from 'react';
-import { Link as NativeLink, VStack, Button, HStack, Text } from 'native-base';
+import { View } from 'react-native';
+import { VStack, Button, Text, useToken } from 'native-base';
 import { Link } from '@react-navigation/native';
 
 function Footer({ handleSubmit }) {
+  const [primary] = useToken('colors', ['primary.600']);
+  const textStyle = {
+    textAlign: 'center',
+  };
+  const linkStyle = {
+    color: primary,
+    textDecorationLine: 'underline',
+  };
   return (
     <>
       <VStack space={2}>
-        <Button
-          colorScheme="cyan"
-          _text={{ color: 'white' }}
-          onPress={handleSubmit}>
-          Sign in
-        </Button>
+        <Button onPress={handleSubmit}>Sign in</Button>
       </VStack>
-      <HStack justifyContent="center">
-        <Text fontSize="sm" color="muted.700" fontWeight={400}>
-          I'm a new user.{' '}
+      <View>
+        <Text size="sm" style={textStyle}>
+          Don't have an account?{' '}
+          <Link to={{ screen: 'Sign Up' }} style={linkStyle}>
+            Sign up here!
+          </Link>
         </Text>
-        <NativeLink>
-          <Link to={{ screen: 'Register' }}>Sign Up</Link>
-        </NativeLink>
-      </HStack>
+      </View>
     </>
   );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControl, TextField, Select } from 'native-base';
+import { FormControl, Input, Select } from 'native-base';
 
 import { handleFailedPolicies } from '../utilities/failedPolicies';
 
@@ -19,7 +19,7 @@ function KBA({ label, questions = [], val, setter, output }) {
           <Select.Item label={question} key={question} value={question} />
         ))}
       </Select>
-      <TextField
+      <Input
         onChangeText={(itemValue) => setter({ ...val, answer: itemValue })}
       />
     </FormControl>

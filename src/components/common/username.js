@@ -6,12 +6,14 @@ const Username = ({ label, setUsername, output }) => {
   const error = handleFailedPolicies(output);
   return (
     <FormControl isInvalid={error}>
-      <FormControl.Label
-        _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
-        {label}
-      </FormControl.Label>
+      <FormControl.Label>{label}</FormControl.Label>
       <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>
-      <Input onChangeText={setUsername} />
+      <Input
+        onChangeText={setUsername}
+        autoCapitalize="none"
+        autoComplete="off"
+        autoCorrect={false}
+      />
     </FormControl>
   );
 };

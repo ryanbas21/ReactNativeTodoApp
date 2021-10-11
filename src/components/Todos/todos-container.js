@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { Box, Center, Heading, View } from 'native-base';
+import { Box, Center, Heading, ScrollView, Text } from 'native-base';
 import { Todos } from './todo';
 import { TodoInput } from './todo-input';
 import { useToggle } from '../../hooks/useToggle.js';
@@ -38,53 +38,21 @@ function TodoContainer() {
   return fetching ? (
     <Loading message={'Loading User Data'} />
   ) : (
-    <View>
-      <Center>
-        <Box
-          shadow={1}
-          _light={{
-            backgroundColor: 'white',
-          }}
-          _dark={{
-            backgroundColor: 'white',
-          }}>
-          <Heading
-            size="2xl"
-            alignSelf={{
-              base: 'flex-start',
-            }}>
-            Your Todos
-          </Heading>
-          <Heading
-            size="lg"
-            alignSelf={{
-              base: 'flex-start',
-              md: 'flex-start',
-            }}>
-            Your Todos
-          </Heading>
-          <Heading
-            size="sm"
-            alignSelf={{
-              base: 'flex-start',
-              md: 'flex-start',
-            }}>
-            Create and manage your todos
-          </Heading>
-          <Center>
-            <Box h={'100%'} w={'100%'} bg={'white'} p={2}>
-              <TodoInput todos={todos} dispatch={dispatch} />
-              <Todos
-                todos={todos}
-                editTodo={editTodo}
-                handleDelete={handleDelete}
-                handleStatusChange={handleStatusChange}
-              />
-            </Box>
-          </Center>
-        </Box>
-      </Center>
-    </View>
+    <ScrollView>
+      <Box safeArea flex={1} p={2} w="90%" mx="auto">
+        <Heading size="lg">Your Todos</Heading>
+        <Text fontSize="md" mb={4}>
+          Create and manage your todos
+        </Text>
+        <TodoInput todos={todos} dispatch={dispatch} />
+        <Todos
+          todos={todos}
+          editTodo={editTodo}
+          handleDelete={handleDelete}
+          handleStatusChange={handleStatusChange}
+        />
+      </Box>
+    </ScrollView>
   );
 }
 

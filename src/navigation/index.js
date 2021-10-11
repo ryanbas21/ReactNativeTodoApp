@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { NativeModules } from 'react-native';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 
 import Theme from '../theme/index';
 import { AppContext, useGlobalStateMgmt } from '../global-state';
@@ -34,9 +34,7 @@ function Navigation() {
   return (
     <Theme>
       <AppContext.Provider value={stateMgmt}>
-        <NavigationContainer
-          theme={DefaultTheme}
-          isAuthenticated={isAuthenticated}>
+        <NavigationContainer isAuthenticated={isAuthenticated}>
           <RootNavigator />
         </NavigationContainer>
       </AppContext.Provider>
