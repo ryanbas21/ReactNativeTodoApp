@@ -63,7 +63,6 @@ public class ForgeRockModule extends ReactContextBaseJavaModule {
     ReactApplicationContext context;
     Node currentNode;
     NodeListener listener;
-    Callback reactNativeCallback;
     Promise reactNativePromise;
 
     ForgeRockModule(ReactApplicationContext context) {
@@ -98,47 +97,6 @@ public class ForgeRockModule extends ReactContextBaseJavaModule {
         }catch (Exception e){
             promise.reject("error", e.toString(), e);
         }
-    }
-
-    @ReactMethod
-    public void authenticateWithTree(String tree, Callback cb) {
-        try{
-            reactNativeCallback = cb;
-            treeLogin(tree);
-        }catch (Exception e){
-            cb.invoke(e.toString(), null);
-        }
-    }
-
-    @ReactMethod
-    public void loginWithBrowser(Promise promise) {
-        launchBrowser(promise);
-    }
-
-    @ReactMethod
-    public void getDeviceInformation(Promise promise) {
-        FRDevice.getInstance().getProfile(new FRListener<JSONObject>() {
-            @Override
-            public void onSuccess(JSONObject result) {
-                WritableMap productMap = null;
-                try {
-                    Gson gson = new Gson();
-                    String jsonStr = gson.toJson(result);
-                    productMap = convertJsonToMap(new
-                            JSONObject(jsonStr));
-                    promise.resolve(productMap);
-                } catch (JSONException e) {
-                    Logger.error("error", e, "getDeviceInformation Failed");
-                    promise.reject("error", e.getMessage(), e);
-                }
-            }
-
-            @Override
-            public void onException(Exception e) {
-                Logger.warn("getDeviceInformation", e, "Failed to retrieve device profile");
-                promise.reject("error", e.getMessage(), e);
-            }
-        });
     }
 
     @ReactMethod
@@ -287,89 +245,6 @@ public class ForgeRockModule extends ReactContextBaseJavaModule {
         };
 
         FRUser.login(this.context, nodeListenerFuture);
-    }
-
-    public void launchBrowser(Promise promise) {
-        MainActivity activity = (MainActivity) getCurrentActivity();
-        activity.reactNativePromise = promise;
-        activity.centralizedLogin();
-    }
-
-    public void treeLogin(String tree) {
-        NodeListener<FRSession> nodeListenerFuture = new NodeListener<FRSession>() {
-            @Override
-            public void onSuccess(FRSession token) {
-                final AccessToken accessToken;
-                WritableMap map = Arguments.createMap();
-                try {
-                    accessToken = FRUser.getCurrentUser().getAccessToken();
-                    Gson gson = new Gson();
-                    String json = gson.toJson(accessToken);
-                    map.putString("accessToken", json);
-                    reactNativeCallback.invoke(map);
-                } catch (AuthenticationRequiredException e) {
-                    Logger.warn("treeLogin", e, "Login Failed");
-                    map.putString("error", e.getLocalizedMessage());
-                    reactNativeCallback.invoke(map);
-                }
-            }
-
-            @Override
-            public void onException(Exception e) {
-                // Handle Exception
-                Logger.warn("treeLogin", e, "Login Failed");
-                WritableMap map = Arguments.createMap();
-                map.putString("error", e.getLocalizedMessage());
-                reactNativeCallback.invoke(map);
-            }
-
-            @Override
-            public void onCallbackReceived(Node node) {
-                listener = this;
-                currentNode = node;
-                WritableMap callbacksMap = Arguments.createMap();
-                LinkedHashMap<String, WritableMap> linkedMap = new LinkedHashMap<String, WritableMap>();
-                for (org.forgerock.android.auth.callback.Callback callback : node.getCallbacks()) {
-                    WritableMap map = Arguments.createMap();
-                    switch (callback.getType()) {
-                        case "NameCallback":
-                            NameCallback nameCallback = node.getCallback(NameCallback.class);
-                            map.putString("prompt",nameCallback.prompt);
-                            map.putString("type",nameCallback.getType());
-                            linkedMap.put("NameCallback", map);
-                            break;
-                        case "PasswordCallback":
-                            PasswordCallback passwordCallback = node.getCallback(PasswordCallback.class);
-                            map.putString("prompt",passwordCallback.prompt);
-                            map.putString("type",passwordCallback.getType());
-                            linkedMap.put("PasswordCallback", map);
-                            break;
-                        case "ChoiceCallback":
-                            ChoiceCallback choiceCallback = node.getCallback(ChoiceCallback.class);
-                            map.putString("prompt",choiceCallback.prompt);
-                            map.putString("type",choiceCallback.getType());
-                            String[] choices = choiceCallback.getChoices().toArray(new String[0]);
-                            WritableArray array = Arguments.fromArray(choices);
-                            map.putArray("choices", array);
-                            linkedMap.put("ChoiceCallback", map);
-                            break;
-                        case "DeviceProfileCallback":
-                            DeviceProfileCallback deviceCallback = node.getCallback(DeviceProfileCallback.class);
-                            map.putString("type",deviceCallback.getType());
-                            linkedMap.put("DeviceProfileCallback", map);
-                            break;
-                    }
-                }
-                String[] keys = linkedMap.keySet().toArray(new String[linkedMap.size()]);
-                for (int i = keys.length - 1; i >= 0; i--) {
-                    callbacksMap.putMap(keys[i], linkedMap.get(keys[i]));
-                }
-                reactNativeCallback.invoke(callbacksMap);
-
-            }
-        };
-
-        FRSession.authenticate(context, tree, nodeListenerFuture);
     }
 
     private static WritableMap convertJsonToMap(JSONObject jsonObject) throws JSONException {
