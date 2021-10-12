@@ -1,26 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NativeModules } from 'react-native';
 import { Button, Box, FormControl, ScrollView } from 'native-base';
 
 import { Header } from './header';
 import { Loading } from '../utilities/loading';
 import { callbackTypeToComponent } from '../utilities/callbackMap';
+import { AppContext } from '../../global-state';
 
 const { ForgeRockModule } = NativeModules;
 
 function RegisterContainer({ setStep, data, navigation, setLoading, loading }) {
+  const [, { setAuthentication }] = useContext(AppContext);
+
   const handleRegistrationSubmit = async () => {
     setLoading(true);
-
     try {
-      console.log(data);
-      const response = await ForgeRockModule.next(JSON.stringify(data));
+      const response = await ForgeRockModule.next(JSON.stringify(data.payload));
       if (response.type === 'LoginSuccess') {
         setAuthentication(true);
         setStep(response);
         navigation.navigate('Home');
       } else {
-        console.log(response);
         setAuthentication(false);
         setLoading(false);
       }

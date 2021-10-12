@@ -10,12 +10,12 @@ function Register({ navigation }) {
   const [data, setStep] = useState(null);
   const [loading, setLoading] = useState(true);
   function setResponse(response) {
+    console.log(response);
     if (response.sessionToken) {
       const newData = {
         ...response,
         sessionToken: JSON.parse(response.sessionToken),
       };
-      console.log('new data', newData);
       setData(newData);
       return newData;
     }

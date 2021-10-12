@@ -50,7 +50,7 @@ function LoginContainer({ step, callbacks, error, setLoading, loading }) {
        * added to the form
        */
       console.log(step);
-      const req = JSON.stringify(step);
+      const req = JSON.stringify(step.payload);
       const response = await ForgeRockModule.next(req);
 
       /*
