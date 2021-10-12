@@ -1,9 +1,11 @@
 import React from 'react';
-import { handleFailedPolicies } from '../utilities/failedPolicies';
+// import { handleFailedPolicies } from '../utilities/failedPolicies';
 import { FormControl, Input } from 'native-base';
 
-const Username = ({ label, setUsername, output }) => {
-  const error = handleFailedPolicies(output);
+const Username = ({ callback }) => {
+  const error = '';
+  const label = callback.getPrompt();
+  const setUsername = (text) => callback.setName(text);
   return (
     <FormControl isInvalid={error}>
       <FormControl.Label>{label}</FormControl.Label>

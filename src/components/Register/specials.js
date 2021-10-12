@@ -20,22 +20,30 @@ function TermsModal({ terms, showModal, setModal }) {
   );
 }
 
-const Specials = ({ label, val, setter, terms = null, output }) => {
+const Specials = ({ callback }) => {
+  const [checked, setChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  console.log(terms);
+  const error = '';
+
+  const label = callback.getPrompt ? callback.getPrompt() : null;
+  const terms = callback.getTerms ? callback.getTerms() : null;
+
+  if (callback.setValue) callback.setValue(checked);
+  if (callback.setAccepted) callback.setAccepted(checked);
+
   return (
     <VStack mb={3}>
-      {handleFailedPolicies(output) ? (
-        <Text>{handleFailedPolicies(output)}</Text>
-      ) : null}
+      {error ? <Text>{error}</Text> : null}
       <Checkbox.Group accessibilityLabel="terms-checkbox">
-        <Checkbox onChange={setter} isChecked={val} aria-label="terms">
+        <Checkbox
+          onChange={() => setChecked(!checked)}
+          isChecked={checked}
+          aria-label="terms">
           {terms !== null ? (
             <TermsModal
               terms={terms}
               showModal={showModal}
               setModal={setShowModal}
-              terms={terms}
             />
           ) : (
             label

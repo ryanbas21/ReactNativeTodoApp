@@ -6,55 +6,23 @@ import { TextField } from '../Register/text-field';
 import { Specials } from '../Register/specials';
 
 const callbackTypeToComponent = {
-  ValidatedCreateUsernameCallback: ({ label, setter, output }) => (
-    <Username label={label} setUsername={setter} key={label} output={output} />
+  ValidatedCreateUsernameCallback: ({ callback }) => (
+    <Username key={callback._id} callback={callback} />
   ),
-  StringAttributeInputCallback: ({ label, setter, val, output }) => (
-    <TextField
-      label={label}
-      setter={setter}
-      key={label}
-      val={val}
-      output={output}
-    />
+  StringAttributeInputCallback: ({ callback }) => (
+    <TextField key={callback._id} callback={callback} />
   ),
-  BooleanAttributeInputCallback: ({ label, setter, val, output }) => (
-    <Specials
-      label={label}
-      setter={setter}
-      val={val}
-      key={label}
-      output={output}
-    />
+  BooleanAttributeInputCallback: ({ callback }) => (
+    <Specials key={callback._id} callback={callback} />
   ),
-  ValidatedCreatePasswordCallback: ({ label, setter, val, output }) => (
-    <Password
-      label={label}
-      setter={setter}
-      val={val}
-      key={label}
-      output={output}
-    />
+  ValidatedCreatePasswordCallback: ({ callback }) => (
+    <Password key={callback._id} callback={callback} />
   ),
-  TermsAndConditionsCallback: ({ label, setter, val, terms, output }) => (
-    <Specials
-      label={label}
-      setter={setter}
-      val={val}
-      terms={terms}
-      key={label}
-      output={output}
-    />
+  TermsAndConditionsCallback: ({ callback }) => (
+    <Specials key={callback._id} callback={callback} />
   ),
-  KbaCreateCallback: ({ label, setter, val, questions, output }) => (
-    <KBA
-      label={label}
-      setter={setter}
-      val={val}
-      questions={questions}
-      key={label}
-      output={output}
-    />
+  KbaCreateCallback: ({ callback }) => (
+    <KBA key={callback._id} callback={callback} />
   ),
 };
 

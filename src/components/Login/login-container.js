@@ -13,11 +13,11 @@ const { ForgeRockModule } = NativeModules;
 
 // Given a CallbackType, return a Component
 const callbackToComponentMap = {
-  NameCallback: ({ label, setter }) => (
-    <Username setUsername={setter} label={label} key={label} />
+  NameCallback: ({ callback }) => (
+    <Username callback={callback} key={callback._id} />
   ),
-  PasswordCallback: ({ label, setter }) => (
-    <Password setter={setter} label={label} key={label} />
+  PasswordCallback: ({ callback }) => (
+    <Password callback={callback} key={callback._id} />
   ),
 };
 
@@ -26,11 +26,6 @@ function LoginContainer({ step, callbacks, error, setLoading, loading }) {
   const [pass, setPass] = useState('');
   const [err, setErr] = useState(error);
   const [, { setAuthentication }] = useContext(AppContext);
-
-  const setStateByType = {
-    PasswordCallback: setPass,
-    NameCallback: setUsername,
-  };
 
   const getValueByType = {
     PasswordCallback: pass,
@@ -48,20 +43,15 @@ function LoginContainer({ step, callbacks, error, setLoading, loading }) {
      */
     setLoading(true);
 
-    const newCallbacks = callbacks.map(({ type, response }) => {
-      response.input[0].value = getValueByType[type];
-      return response;
-    });
-
-    const request = JSON.stringify({ ...step, callbacks: newCallbacks });
-
     try {
       /*
        * Call the next step in the authentication journey, passing in the data to submit.
        * We want to pass in the mutated callbacks array, which contains the values the user has
        * added to the form
        */
-      const response = await ForgeRockModule.next(request);
+      console.log(step);
+      const req = JSON.stringify(step);
+      const response = await ForgeRockModule.next(req);
 
       /*
        * If we have the LoginSuccess case, the IOS SDK has already gone through the token flow
@@ -97,11 +87,10 @@ function LoginContainer({ step, callbacks, error, setLoading, loading }) {
           ) : null}
           <VStack space={2} mt={5}>
             {callbacks.length
-              ? callbacks.map(({ type, prompt: label }) =>
-                  callbackToComponentMap[type]
-                    ? callbackToComponentMap[type]({
-                        label,
-                        setter: setStateByType[type],
+              ? callbacks.map((callback) =>
+                  callbackToComponentMap[callback.getType()]
+                    ? callbackToComponentMap[callback.getType()]({
+                        callback,
                       })
                     : null,
                 )

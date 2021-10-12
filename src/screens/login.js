@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { LoginContainer } from '../components/Login';
 import { NativeModules } from 'react-native';
-
+import { FRStep } from '@forgerock/javascript-sdk';
 const { ForgeRockModule } = NativeModules;
 
 function Login() {
@@ -15,15 +15,10 @@ function Login() {
       try {
         const data = await ForgeRockModule.loginWithoutUI();
         const next = JSON.parse(data);
+        const step = new FRStep(next);
         setLoading(false);
-
-        setStep(next);
-        setCallbacks(
-          next.callbacks.map((res) => ({
-            ...res,
-            response: JSON.parse(res.response),
-          })),
-        );
+        setStep(step);
+        setCallbacks(step.callbacks);
       } catch (err) {
         await ForgeRockModule.performUserLogout();
         setError(err.message);
