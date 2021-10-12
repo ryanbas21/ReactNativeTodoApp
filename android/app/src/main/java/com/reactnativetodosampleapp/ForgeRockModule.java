@@ -8,11 +8,7 @@
 package com.reactnativetodosampleapp;
 
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -25,12 +21,11 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.forgerock.android.auth.AccessToken;
 import org.forgerock.android.auth.FRAuth;
-import org.forgerock.android.auth.FRDevice;
 import org.forgerock.android.auth.FRListener;
-import org.forgerock.android.auth.FRSession;
 import org.forgerock.android.auth.FRUser;
 import org.forgerock.android.auth.Logger;
 import org.forgerock.android.auth.Node;
@@ -47,15 +42,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-import java.sql.Struct;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.Semaphore;
 
 
@@ -77,9 +66,10 @@ public class ForgeRockModule extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void frAuthStart() {
+    public void frAuthStart(Promise promise) {
         Logger.set(Logger.Level.DEBUG);
         FRAuth.start(this.context);
+        promise.resolve("SDK Initialized");
     }
 
     @ReactMethod
@@ -93,7 +83,16 @@ public class ForgeRockModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void loginWithoutUI(Promise promise) {
         try{
-            customLogin(promise);
+            authenticate(promise, true);
+        }catch (Exception e){
+            promise.reject("error", e.toString(), e);
+        }
+    }
+
+    @ReactMethod
+    public void registerWithoutUI(Promise promise) {
+        try{
+            authenticate(promise, false);
         }catch (Exception e){
             promise.reject("error", e.toString(), e);
         }
@@ -118,7 +117,7 @@ public class ForgeRockModule extends ReactContextBaseJavaModule {
             });
         } else {
             Logger.error("error", "Current user is null. Not logged in or SDK not initialized yet");
-            reactNativePromise.reject("error", "Current user is null. Not logged in or SDK not initialized yet");
+            this.reactNativePromise.reject("error", "Current user is null. Not logged in or SDK not initialized yet");
         }
     }
 
@@ -206,7 +205,7 @@ public class ForgeRockModule extends ReactContextBaseJavaModule {
         currentNode.next(this.context, listener);
     }
 
-    public void customLogin(Promise promise) {
+    public void authenticate(Promise promise, boolean isLogin) {
         this.reactNativePromise = promise;
         NodeListener<FRUser> nodeListenerFuture = new NodeListener<FRUser>() {
             @Override
@@ -244,7 +243,11 @@ public class ForgeRockModule extends ReactContextBaseJavaModule {
             }
         };
 
-        FRUser.login(this.context, nodeListenerFuture);
+        if (isLogin == true) {
+            FRUser.login(this.context, nodeListenerFuture);
+        } else {
+            FRUser.register(this.context, nodeListenerFuture);
+        }
     }
 
     private static WritableMap convertJsonToMap(JSONObject jsonObject) throws JSONException {
@@ -354,7 +357,7 @@ public class ForgeRockModule extends ReactContextBaseJavaModule {
 }
 
 class FRNode {
-    List<FRCallback> callbacks;
+    List<FRCallback> frCallbacks;
 
     private String authId;
     /// Unique UUID String value of initiated AuthService flow
@@ -365,6 +368,8 @@ class FRNode {
     private String pageHeader;
     /// Description attribute in Page Node
     private String pageDescription;
+    //array of raw callbacks
+    private List<JsonObject> callbacks;
 
     public FRNode(Node node) {
         this.authId = node.getAuthId();
@@ -372,18 +377,25 @@ class FRNode {
         this.stage = node.getStage();
         this.pageHeader = node.getHeader();
         this.pageDescription = node.getDescription();
-        this.callbacks = new ArrayList<FRCallback>();
+        this.frCallbacks = new ArrayList<FRCallback>();
+        this.callbacks = new ArrayList<JsonObject>();
         for (org.forgerock.android.auth.callback.Callback callback: node.getCallbacks()) {
-            this.callbacks.add(new FRCallback(callback));
+            this.frCallbacks.add(new FRCallback(callback));
+            JsonObject convertedObject = new Gson().fromJson(callback.getContent(), JsonObject.class);
+            this.callbacks.add(convertedObject);
         }
     }
 
-    public List<FRCallback> getCallbacks() {
-        return callbacks;
+    public List<JsonObject> getCallbacks() { return callbacks; }
+
+    public void setCallbacks(List<JsonObject> callbacks) { this.callbacks = callbacks; }
+
+    public List<FRCallback> getFrCallbacks() {
+        return frCallbacks;
     }
 
-    public void setCallbacks(List<FRCallback> callbacks) {
-        this.callbacks = callbacks;
+    public void setFrCallbacks(List<FRCallback> callbacks) {
+        this.frCallbacks = callbacks;
     }
 
     public String getAuthId() {
