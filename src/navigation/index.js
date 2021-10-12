@@ -10,17 +10,18 @@ import { LoginRoutes, TodoRoutes } from '../navigation/routes';
 const { ForgeRockModule } = NativeModules;
 
 function Navigation() {
-  const [auth, setAuth] = useToggle();
+  const [auth, setAuth] = useToggle(false);
 
   useEffect(() => {
     async function checkForToken() {
       try {
         if (!auth) {
-          await ForgeRockModule.frAuthStart();
           const token = await ForgeRockModule.getAccessToken();
           setAuth(Boolean(token));
         }
-      } catch (err) {}
+      } catch (err) {
+        console.log('the error', err);
+      }
     }
     checkForToken();
   }, [auth]);
