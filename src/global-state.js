@@ -46,6 +46,7 @@ export function useGlobalStateMgmt({ isAuthenticated = false }) {
        ********************************************************************* */
       await ForgeRockModule.performUserLogout();
     }
+
     setAuthentication(value);
   }
   /**
